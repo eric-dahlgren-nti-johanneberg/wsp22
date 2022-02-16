@@ -1,0 +1,35 @@
+section
+    h1 create user
+    form action="/user" method="post"
+        input type="text" placeholder="username" name="username" /
+        input type="password" placeholder="password" name="password"  /
+        input type="submit" value="skapa"/
+section
+    h1 list users
+    - users.each do |user|
+        p = user[:username]
+section
+    p = users
+section
+    form action="/result" method="post"
+        div
+            label for="winner" Vinnare
+            select#winner name="winner"
+                - users.each do |user|
+                    option value=user[:id] = user[:username]
+        div
+            label for="loser" Förlorare
+            select#loser name="loser"
+                - users.each do |user|
+                    option value=user[:id] = user[:username]
+        div
+            input type="submit" value="Skapa resultat"
+section 
+    h2 matcher
+    ul
+        - results.each do |result|
+            li style="flex: 1; display: flex; gap: 4px"
+                p = result[:timestamp]
+                p = result[:id]
+                p vs
+                p = result[:loser]
