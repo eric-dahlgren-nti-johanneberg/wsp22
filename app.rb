@@ -5,6 +5,8 @@ require 'sinatra/reloader' if development?
 require 'extralite'
 require 'sqlite3'
 
+require_relative 'elo'
+
 require 'sinatra-websocket'
 
 set :server, 'thin'
@@ -20,10 +22,13 @@ get '/' do
   if !request.websocket?
 
     scripts = ['socket.js']
-    users = db.query('select * from users')
-    results = db.query('select ( timestamp ) from results inner join users on results.winner = users.id')
 
-    p results
+    users = db.query('select * from users order by elo desc')
+
+    results = db.query('select rs.timestamp, winner_elo_change, loser_elo_change, w.username as winner_username, l.username as loser_username from results rs
+                        left join users w on rs.winner = w.id
+                        left join users l on rs.loser = l.id
+                        order by rs.timestamp desc limit 5')
 
     slim :index, locals: { scripts: scripts, users: users, results: results }
   else
@@ -60,14 +65,29 @@ post '/result' do
   winner = params[:winner].to_i
   loser = params[:loser].to_i
 
-  winner_elo_change = 10
-  loser_elo_change = -10
+  return redirect '/' if winner.nil? || loser.nil?
 
-  db.query('insert into results (winner, loser, winner_elo_change, loser_elo_change) values ($1, $2, $3, $4)',
-           winner,
-           loser,
-           winner_elo_change,
-           loser_elo_change)
+  winner_elo = db.query_single_value('select elo from users where id = $1', winner)
+  loser_elo = db.query_single_value('select elo from users where id = $1', loser)
+
+  match = EloRating::Match.new
+
+  match.add_player(rating: winner_elo, winner: true)
+  match.add_player(rating: loser_elo)
+
+  winner_elo_change = match.updated_ratings[0] - winner_elo
+  loser_elo_change = match.updated_ratings[1] - loser_elo
+
+  if winner_elo_change && loser_elo_change
+    db.query('insert into results (winner, loser, winner_elo_change, loser_elo_change) values ($1, $2, $3, $4)',
+             winner,
+             loser,
+             winner_elo_change,
+             loser_elo_change)
+
+    db.query('update users set elo = $1 where id = $2', match.updated_ratings[1], winner)
+    db.query('update users set elo = $1 where id = $2', match.updated_ratings[0], loser)
+  end
 
   redirect '/'
 end
