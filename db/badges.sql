@@ -1,3 +1,6 @@
+drop table if exists badges; 
+drop table if exists badges_users;; 
+
 create table badges (
     bd_id integer PRIMARY key AUTOINCREMENT,
     bd_desc text,

@@ -3,6 +3,7 @@ GIT
   revision: 9cb13a8a62363df5ebcc414169a3deb2c1608528
   tag: v1.2.7
   specs:
+    eventmachine (1.2.7)
     eventmachine (1.2.7-x64-mingw32)
 
 GEM
@@ -52,6 +53,7 @@ GEM
     tilt (2.0.10)
 
 PLATFORMS
+  x64-mingw-ucrt
   x64-mingw32
 
 DEPENDENCIES

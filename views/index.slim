@@ -2,7 +2,7 @@ section
   h1 create user
   form action="/user" method="post"
     input type="text" placeholder="username" name="username" /
-    input type="password" placeholder="password" name="password"  /
+    input class="form-input" type="password" placeholder="password" name="password"  /
     input type="submit" value="skapa"/
 section
   h1 Leaderboard
@@ -48,3 +48,16 @@ section
         p.winner = "#{result[:winner_username]} (+#{result[:winner_elo_change]} ELO)"
         p vs
         p.loser = "#{result[:loser_username]} (#{result[:loser_elo_change]} ELO)"
+section
+  h2 achievments 
+  form action="/test" method="get"
+    button type="submit" value="Testa" testa
+  form action="/badge" method="post"
+    label for="bd_name" Titel
+    input type="text" name="bd_name"/
+    label for="bd_desc" Beskrivning
+    input type="text" name="bd_desc"/
+    input type="submit" value="Skapa prestationen"/
+  section 
+    - achievements.each do |a|
+      h1 = a[:bd_name]

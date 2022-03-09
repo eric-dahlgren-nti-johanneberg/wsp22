@@ -6,6 +6,7 @@ require 'extralite'
 require 'sqlite3'
 
 require_relative 'elo'
+require_relative 'models/achievement'
 
 require 'sinatra-websocket'
 
@@ -16,36 +17,21 @@ configure :development do
   register Sinatra::Reloader
 end
 
-db = Extralite::Database.new 'db/dev.db'
+db = Extralite::Database.new 'db/dev.sqlite'
 
 get '/' do
-  if !request.websocket?
+  scripts = ['socket.js']
 
-    scripts = ['socket.js']
+  users = db.query('select * from users order by elo desc')
 
-    users = db.query('select * from users order by elo desc')
-
-    results = db.query('select rs.timestamp, winner_elo_change, loser_elo_change, w.username as winner_username, l.username as loser_username from results rs
+  results = db.query('select rs.timestamp, winner_elo_change, loser_elo_change, w.username as winner_username, l.username as loser_username from results rs
                         left join users w on rs.winner = w.id
                         left join users l on rs.loser = l.id
                         order by rs.timestamp desc limit 5')
 
-    slim :index, locals: { scripts: scripts, users: users, results: results }
-  else
-    request.websocket do |ws|
-      ws.onopen do
-        ws.send('Hello World!')
-        settings.sockets << ws
-      end
-      ws.onmessage do |msg|
-        EM.next_tick { settings.sockets.each { |s| s.send(msg) } }
-      end
-      ws.onclose do
-        warn('websocket closed')
-        settings.sockets.delete(ws)
-      end
-    end
-  end
+  achievements = db.query('select * from badges')
+
+  slim :index, locals: { scripts: scripts, users: users, results: results, achievements: achievements }
 end
 
 def verify_params(params, keys, to)
@@ -87,7 +73,14 @@ post '/result' do
 
     db.query('update users set elo = $1 where id = $2', match.updated_ratings[1], winner)
     db.query('update users set elo = $1 where id = $2', match.updated_ratings[0], loser)
+
   end
+
+  redirect '/'
+end
+get '/test' do
+  Achievement.init(db)
+  ExistAchievement.try_award(1)
 
   redirect '/'
 end
