@@ -1,0 +1,16 @@
+main class="flex flex-row justify-center gap-8 my-4"
+    form action="/user/signin" method="post" class="p-4 flex-col items-center flex prose-sm max-w-sm gap-2 shadow-md rounded-md"
+        h1 class="" Sign in
+        p psst, admin har lösenordet "password"
+        input class="form-input" type="text" placeholder="username" name="username" /
+        input class="form-input" type="password" placeholder="password" name="password"  /
+        div class="flex justify-center"
+            == partial 'button', locals: { label: 'Sign in', type: 'submit' }  
+
+    form action="/user/new" method="post" class="p-4 flex-col items-center flex prose-sm max-w-sm gap-2 shadow-md rounded-md"
+        h1 class="" Sign up
+
+        input class="form-input" type="text" placeholder="username" name="username" /
+        input class="form-input" type="password" placeholder="password" name="password"  /
+        div class="flex justify-center"
+            == partial 'button', locals: { label: "Sign up", type: "submit" }  

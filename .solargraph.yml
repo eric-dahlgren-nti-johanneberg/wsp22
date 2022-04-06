@@ -1,6 +1,7 @@
 
 include:
-- "**/*.rb"
+- "app.rb"
+- "models.rb"
 exclude:
 - spec/**/*
 - test/**/*
@@ -13,7 +14,7 @@ reporters:
 formatter:
   rubocop:
     cops: safe
-    except: []
+    except: ["LineLength"]
     only: []
     extra_args: []
 require_paths: [""]

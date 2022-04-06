@@ -1,0 +1,27 @@
+main class="max-w-screen-md m-auto"
+    - if session[:user] && session[:user][:admin] == 1
+        p Du är en admin och kan redigera användare
+        section class="space-x-2"
+            button class="px-4 py-2 border-2 bg-red-600 border-red-600 text-white font-bold shadow-sm rounded-md" Stäng av 
+    	    button class="px-4 py-2 border-2 border-red-600 text-black font-bold shadow-sm rounded-md" Varna 
+    section class="flex gap-4 my-4"
+        div class="w-40"
+            img src="https://avatars.dicebear.com/api/pixel-art/#{@user[:id]}.svg" class="h-40 w-40 rounded-full"
+            - if @user[:admin] == 1
+                div 
+                    p class="font-bold text-center" = @user[:username] 
+                    i data-feather=""
+            - else
+                p class="font-bold text-center" = @user[:username]
+            p class="font-semibold text-center" = "#{@user[:elo]} ELO"
+        div class="mt-4"
+            h1 class="text-2xl font-semibold" = "#{@user[:username]}s senaste matcher" 
+            - @user_matches.each do |result|
+                li class="flex items-center gap-4 flex-1"
+                    div
+                        p = result[:timestamp]
+                    div class="flex gap-4 items-center"
+                        == partial "user", locals: { user: { id: result[:winner], username: result[:winner_username], elo_change: result[:winner_elo_change] } } 
+                        p vs
+                        == partial "user", locals: { user: { id: result[:loser], username: result[:loser_username], elo_change: result[:loser_elo_change] } }     
+                

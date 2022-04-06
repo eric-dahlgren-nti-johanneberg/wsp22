@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Base achievement class
 class Achievement
   def self.init(daatbase)
     @@db = daatbase

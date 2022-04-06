@@ -1,5 +1,6 @@
 module.exports = {
   content: ["./views/**/*.slim", "./public/**/*.js"],
+  darkMode: "class",
   theme: {
     extend: {},
   },

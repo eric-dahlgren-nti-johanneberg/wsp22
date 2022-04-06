@@ -1,0 +1,23 @@
+html lang="en"
+    head
+        meta charset="UTF-8"/
+        meta http-equiv="X-UA-Compatible" content="IE=edge"/
+        meta name="viewport" content="width=device-width, initial-scale=1.0"/
+        link rel="stylesheet" href="/styles/tailwind.css" type="text/css"/
+        script src="https://unpkg.com/feather-icons"
+        title Document
+    body class=""
+        header class="flex gap-8 h-16 align-middle items-center flex-row max-w-screen-md m-auto shadow-md px-4 rounded-b-md"
+            a href="/" class="flex-grow"
+                h1 Sten-Sax-Påse
+            nav
+            - if session[:user]
+                p = "Hej #{session[:user][:username]}"
+            - else
+                a href="/sign-in" Logga in
+        == yield
+    javascript:
+        feather.replace();
+    - if @scripts
+        - @scripts.each do |uri|
+            script src="js/#{uri}"
