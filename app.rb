@@ -3,7 +3,6 @@ require 'sinatra/reloader' if development?
 require 'extralite'
 require 'sqlite3'
 
-require_relative 'elo'
 require_relative 'models'
 
 configure :development do
@@ -17,21 +16,25 @@ helpers do
   def partial(name, path: '/components', locals: {})
     Slim::Template.new("#{settings.views}#{path}/#{name}.slim").render(self, locals)
   end
+
+  def auth?
+    !session[:user].nil?
+  end
 end
 
 get '/' do
   users = fetch_users
   results = fetch_latest_matches
+  challenges = fetch_challenges(session[:user]) || []
 
-  slim :"application/index", locals: { users: users, results: results }
+  slim :"application/index", locals: { users: users, results: results, challenges: challenges }
 end
 
-def verify_params(params, keys)
-  keys.each do |key|
-    return { key: key, message: "#{key} is invalid" } if params[key] == ''
-  end
-  return nil
-end
+#
+#   ----------------------------------------------------------------------------
+#                                     Användare
+#   ----------------------------------------------------------------------------
+#
 
 get '/sign-in' do
   slim :"users/sign-in"
@@ -46,9 +49,8 @@ end
 post '/user/signin' do
   error = verify_params(params, %w[username password])
   return redirect '/sign-in' if error
-  
+
   sign_in_err = sign_in(params[:username], params[:password])
-  p sign_in_err
   return redirect '/sign-in' if sign_in_err
 
   redirect '/'
@@ -57,9 +59,52 @@ end
 post '/user/new' do
   error = verify_params(params, %w[username password])
   redirect '/sign-in' if error
+  return redirect '/sign-in' if user_exists(params[:username])
 
   add_user(params[:username], params[:password])
   redirect '/'
+end
+
+get '/api/users' do
+  users = fetch_users
+  users.to_json
+end
+
+#
+#   ----------------------------------------------------------------------------
+#                                     Matcher
+#   ----------------------------------------------------------------------------
+#
+
+get '/challenge/:id' do |id|
+  redirect '/sign-in' unless check_auth(session)
+  redirect '/' unless check_user(id.to_i)
+
+  @user = fetch_user(id.to_i)
+
+  slim :"matches/challenge"
+end
+
+post '/challenge/:id' do |id|
+  user = id.to_i
+  redirect '/sign-in' unless check_auth(session)
+  redirect "/challenge/#{user}" unless params
+
+  move = params[:move]
+
+  create_challenge(session[:user][:id], user, move)
+
+  redirect '/'
+end
+
+before '/challenge/:id/accept' do |id|
+  redirect '/' unless allow_challenge(id)
+end
+
+get '/challenge/:id/accept' do |id|
+  @opponent = get_challenge(id)
+  
+  slim :"matches/challenge"
 end
 
 post '/result' do
@@ -68,31 +113,17 @@ post '/result' do
 
   return redirect '/' if winner.nil? || loser.nil?
 
-  winner_elo = db.query_single_value('select elo from users where id = $1', winner)
-  loser_elo = db.query_single_value('select elo from users where id = $1', loser)
-
-  match = EloRating::Match.new
-
-  match.add_player(rating: winner_elo, winner: true)
-  match.add_player(rating: loser_elo)
-
-  winner_elo_change = match.updated_ratings[0] - winner_elo
-  loser_elo_change = match.updated_ratings[1] - loser_elo
-
-  if winner_elo_change && loser_elo_change
-    db.query('insert into results (winner, loser, winner_elo_change, loser_elo_change) values ($1, $2, $3, $4)',
-             winner,
-             loser,
-             winner_elo_change,
-             loser_elo_change)
-
-    db.query('update users set elo = $1 where id = $2', match.updated_ratings[0], winner)
-    db.query('update users set elo = $1 where id = $2', match.updated_ratings[1], loser)
-
-  end
+  update_elo(winner, loser)
 
   redirect '/'
 end
+
+#
+#   ----------------------------------------------------------------------------
+#                                  Achievements
+#   ----------------------------------------------------------------------------
+#
+
 get '/test' do
   Achievement.init(db)
   ExistAchievement.try_award(1)

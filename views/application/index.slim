@@ -1,11 +1,15 @@
 section class="xl:grid grid-cols-[1fr_calc(192px_*_4)_1fr] max-w-screen-2xl m-auto gap-4 p-4"
-  aside class="col-start-3 col-end-3 row-end-1 p-2 bg-white rounded-md shadow-md"
-    h1 class="font-semibold" Leaderboard
-    div
-      - users.sort_by { |u| -u[:elo] }.each do |user|
-          div
-            p = "#{user[:username]} - #{user[:elo]}"
+  == partial "leaderboard"
   main class="max-w-screen-md flex flex-col row-span-1 col-start-2 col-end-2"
+    - if is_auth
+      section
+        h2 class="text-xl" Mina utmaningar
+        ul
+          - challenges.each do |ch|
+            div class="p-2 shadow-md rounded-md"
+              p #{ch[:username]} utmanar dig!
+              a class="text-teal-500 font-semibold" href="/challenge/#{ch[:id]}/accept" Acceptera
+
     section class="flex-1"
       h2 class="text-xl" Senaste matcher
       ul class="w-full space-y-2 my-2"
@@ -20,19 +24,17 @@ section class="xl:grid grid-cols-[1fr_calc(192px_*_4)_1fr] max-w-screen-2xl m-au
 
     - if session[:user] && session[:user][:admin] == 1
       section
-        form action="/result" method="post"
+        h2 class="text-xl" Registrera resultat
+        form action="/result" method="post" class="flex flex-col gap-2 max-w-xs"
           label for="winner" Vinnare
           select#winner class="form-select" name="winner" class=""
             option disabled=true selected=true Välj användare
             - users.each do |user|
               option value=user[:id] = "#{user[:username]} - #{user[:elo]} ELO"
-
-          div
-            label for="loser" Förlorare
-            select#loser class="form-select" disabled="true" name="loser"
+          label for="loser" Förlorare
+          select#loser class="form-select" disabled="true" name="loser"
               option disabled=true selected=true Välj spelare 1 först
-          div
-            input type="submit" class="p-2 form-input bg-indigo-500 rounded-sm text-white mt-2 border-0 font-semibold" value="Skapa resultat"
+          == partial "button", locals: {label: "Registrera", type:"submit"}
           javascript:
             const winnerSelect = document.getElementById("winner")
             const loserSelect = document.getElementById("loser")
