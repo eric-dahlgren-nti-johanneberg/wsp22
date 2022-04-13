@@ -42,7 +42,7 @@ module Models
 
     user_rank = db.query_single_value('select admin from users where id = ?', user[:id])
     me_rank = db.query_single_value('select admin from users where id = ?', session[:user][:id])
-    
+
     me_rank > user_rank
   end
 
@@ -97,13 +97,21 @@ module Models
     return nil unless user
     return nil unless user[:id]
 
-    db.query('select ch.username, ch.id as opponent_id, c.id from challenges c left join users ch on c.challenger_id = ch.id where challenged_id = ?', user[:id])
+    db.query('select ch.username, ch.id as opponent_id, c.id as challenge_id from challenges c left join users ch on c.challenger_id = ch.id where challenged_id = ?', user[:id])
   end
 
   def fetch_challenge(id)
-    db.query_single_row('select ch.username, ch.id from challenges c left join users ch on c.challenger_id = ch.id where id = ?', id)
+    db.query_single_row('select ch.username, ch.id as opponent_id from challenges c left join users ch on c.challenger_id = ch.id where c.id = ?', id)
   end
-  
+
+  def allow_challenge(id)
+    return false unless auth?
+
+    ch = db.query_single_value('select challenged_id from challenges where id = ?', id)
+    me = session[:user][:id]
+    ch == me
+  end
+
   def fetch_latest_matches
     db.query('select
 

@@ -1,6 +1,6 @@
 main class='max-w-screen-md m-auto my-4'
-    h1 class='text-xl font-semibold mb-4' Välj ditt drag mot #{@user[:username]}
-    form id="play-form" class='flex flex-col' action="/challenge/#{@user[:id]}" method='post' 
+    h1 class='text-xl font-semibold mb-4' Välj ditt drag mot #{@opponent[:username]}
+    form id="play-form" class='flex flex-col' action="#{@action}" method='post' 
         section class='flex flex-row gap-4 h-20'
             input type='radio' name='move' class='hidden' id='rock' value='rock'
             label for='rock' class='flex-1 bg-pink-500 p-4 flex items-center justify-center'

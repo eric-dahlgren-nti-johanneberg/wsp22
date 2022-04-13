@@ -80,7 +80,8 @@ get '/challenge/:id' do |id|
   redirect '/sign-in' unless check_auth(session)
   redirect '/' unless check_user(id.to_i)
 
-  @user = fetch_user(id.to_i)
+  @opponent = fetch_user(id.to_i)
+  @action = "/challenge/#{id}"
 
   slim :"matches/challenge"
 end
@@ -102,8 +103,9 @@ before '/challenge/:id/accept' do |id|
 end
 
 get '/challenge/:id/accept' do |id|
-  @opponent = get_challenge(id)
-  
+  @opponent = fetch_challenge(id)
+  @action = "/challenge/#{id}/answer"
+
   slim :"matches/challenge"
 end
 

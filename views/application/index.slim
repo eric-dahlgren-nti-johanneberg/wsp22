@@ -1,14 +1,14 @@
 section class="xl:grid grid-cols-[1fr_calc(192px_*_4)_1fr] max-w-screen-2xl m-auto gap-4 p-4"
   == partial "leaderboard"
   main class="max-w-screen-md flex flex-col row-span-1 col-start-2 col-end-2"
-    - if is_auth
+    - if auth?
       section
         h2 class="text-xl" Mina utmaningar
         ul
           - challenges.each do |ch|
             div class="p-2 shadow-md rounded-md"
               p #{ch[:username]} utmanar dig!
-              a class="text-teal-500 font-semibold" href="/challenge/#{ch[:id]}/accept" Acceptera
+              a class="text-teal-500 font-semibold" href="/challenge/#{ch[:challenge_id]}/accept" Acceptera
 
     section class="flex-1"
       h2 class="text-xl" Senaste matcher

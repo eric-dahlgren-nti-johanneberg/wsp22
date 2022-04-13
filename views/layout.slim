@@ -11,7 +11,7 @@ html lang="en"
             a href="/" class="flex-grow"
                 h1 Sten-Sax-Påse
             nav
-            - if session[:user]
+            - if auth?
                 p = "Hej #{session[:user][:username]}"
             - else
                 a href="/sign-in" Logga in
