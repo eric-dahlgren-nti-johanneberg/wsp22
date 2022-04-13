@@ -35,7 +35,8 @@ GEM
     tilt (2.0.10)
 
 PLATFORMS
-  x64-mingw-ucrt
+  x64-unknown
+  x86_64-linux
 
 DEPENDENCIES
   bcrypt
@@ -47,4 +48,4 @@ DEPENDENCIES
   thin
 
 BUNDLED WITH
-   2.3.7
+   2.3.11
