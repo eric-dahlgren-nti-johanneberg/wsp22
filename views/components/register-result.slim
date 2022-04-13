@@ -1,0 +1,12 @@
+- if admin?
+    section class="flex-1 bg-white rounded-md shadow-md p-2"
+        h2 class="text-xl" Registrera resultat
+        form action="/result" method="post" class="flex flex-col gap-2"
+            label for="winner" Vinnare
+            select#winner class="form-select" name="winner" class=""
+                option disabled=true selected=true Välj användare
+            label for="loser" Förlorare
+            select#loser class="form-select" disabled="true" name="loser"
+                option disabled=true selected=true Välj spelare 1 först
+            == partial "button", locals: {label: "Registrera", type:"submit"}
+    script src="js/register.js" 

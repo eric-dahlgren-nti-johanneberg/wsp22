@@ -1,5 +1,5 @@
 main class="max-w-screen-md m-auto"
-    - if auth? && is_admin && can_modify(@user)
+    - if admin? && can_modify(@user)
         p Du är en admin och kan redigera denna användare
         section class="space-x-2"
             button class="px-4 py-2 border-2 bg-red-600 border-red-600 text-white font-bold shadow-sm rounded-md" Stäng av för evigt

@@ -97,9 +97,8 @@ post '/challenge/:id' do |id|
 
   redirect '/'
 end
-
-before '/challenge/:id/accept' do |id|
-  redirect '/' unless allow_challenge(id)
+before '/challenge/:id/*' do
+  redirect '/' unless allow_challenge(params[:id])
 end
 
 get '/challenge/:id/accept' do |id|
@@ -107,6 +106,14 @@ get '/challenge/:id/accept' do |id|
   @action = "/challenge/#{id}/answer"
 
   slim :"matches/challenge"
+end
+
+post '/challenge/:id/answer' do |id|
+  challenge = fetch_challenge(id.to_i)
+
+  p challenge
+
+  redirect "/user/#{session[:user][:id]}"
 end
 
 post '/result' do
@@ -118,6 +125,15 @@ post '/result' do
   update_elo(winner, loser)
 
   redirect '/'
+end
+
+#
+#   ----------------------------------------------------------------------------
+#                                  Kommentarer
+#   ----------------------------------------------------------------------------
+#
+
+post '/user/:id/comment' do |id|
 end
 
 #
