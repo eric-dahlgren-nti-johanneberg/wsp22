@@ -22,23 +22,26 @@ module Models
   #
   #
 
-  def check_auth(session)
+  def auth?
     !session[:user].nil?
   end
 
-  def check_user(u_id)
+  def disabled?(u_id)
     disabled = db.query_single_value('select disabled_until from users where id = ?', u_id)
     return false unless disabled.nil? || disabled < '1'
 
     true
   end
 
-  def is_admin(user = session[:user][:id])
-    db.query_single_value('select admin from users where id = ?', user) > 0
+  def admin?
+    return false unless auth?
+
+    user = session[:user][:id]
+    db.query_single_value('select admin from users where id = ?', user).positive?
   end
 
   def can_modify(user)
-    return false if user.nil? || session[:user].nil?
+    return false if user.nil? || !auth?
 
     user_rank = db.query_single_value('select admin from users where id = ?', user[:id])
     me_rank = db.query_single_value('select admin from users where id = ?', session[:user][:id])
@@ -83,6 +86,13 @@ module Models
     session&.destroy
   end
 
+  def disable_user_1_week(id)
+    return unless admin?
+
+    db.query("update users set disabled = date('now', '+1 week') where id = ?", id)
+
+  end
+
   #
   #
   # ------- Matches -------
@@ -101,7 +111,7 @@ module Models
   end
 
   def fetch_challenge(id)
-    db.query_single_row('select ch.username, ch.id as opponent_id from challenges c left join users ch on c.challenger_id = ch.id where c.id = ?', id)
+    db.query_single_row('select ch.username, ch.id, move as opponent_id from challenges c left join users ch on c.challenger_id = ch.id where c.id = ?', id)
   end
 
   def allow_challenge(id)
