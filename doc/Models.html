@@ -140,102 +140,6 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#admin%3F-instance_method" title="#admin? (instance method)">#<strong>admin?</strong>  &#x21d2; Boolean </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Check om inloggad användare är admin.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#allow_challenge-instance_method" title="#allow_challenge (instance method)">#<strong>allow_challenge</strong>(id)  &#x21d2; Boolean </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Check för att se om användaren har tillgång till utmaningen.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#auth%3F-instance_method" title="#auth? (instance method)">#<strong>auth?</strong>  &#x21d2; Boolean </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Check om en användare är inloggad.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#can_modify-instance_method" title="#can_modify (instance method)">#<strong>can_modify</strong>(user)  &#x21d2; Boolean </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Check om inloggad användare har högre rank än en annan användare.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#create_challenge-instance_method" title="#create_challenge (instance method)">#<strong>create_challenge</strong>(challenger, challenged, move)  &#x21d2; void </a>
     
 
@@ -324,30 +228,6 @@
   
     <span class="summary_desc"><div class='inline'>
 <p>Stänger av en användare 1 vecka.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#disabled%3F-instance_method" title="#disabled? (instance method)">#<strong>disabled?</strong>(u_id)  &#x21d2; Boolean </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Check om en användare är avstängd.</p>
 </div></span>
   
 </li>
@@ -452,7 +332,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#fetch_latest_matches-instance_method" title="#fetch_latest_matches (instance method)">#<strong>fetch_latest_matches</strong>  &#x21d2; Array&lt;Hash&gt; </a>
+      <a href="#fetch_latest_matches-instance_method" title="#fetch_latest_matches (instance method)">#<strong>fetch_latest_matches</strong>(user = nil)  &#x21d2; Array&lt;Hash&gt; </a>
     
 
     
@@ -467,7 +347,7 @@
 
   
     <span class="summary_desc"><div class='inline'>
-<p>Hämtar senaste matcherna.</p>
+<p>Hämtar senaste matcherna, om en användare är angiven hämtas bara dens matcher.</p>
 </div></span>
   
 </li>
@@ -516,30 +396,6 @@
   
     <span class="summary_desc"><div class='inline'>
 <p>Hämta flera användare från databasen.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#fetch_users_latest_matches-instance_method" title="#fetch_users_latest_matches (instance method)">#<strong>fetch_users_latest_matches</strong>(uid)  &#x21d2; Array&lt;Hash&gt; </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Hämtar senaste matcherna för en användare.</p>
 </div></span>
   
 </li>
@@ -620,7 +476,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#sign_in-instance_method" title="#sign_in (instance method)">#<strong>sign_in</strong>(username, password)  &#x21d2; void </a>
+      <a href="#sign_in-instance_method" title="#sign_in (instance method)">#<strong>sign_in</strong>(username, password)  &#x21d2; nil </a>
     
 
     
@@ -660,54 +516,6 @@
   
     <span class="summary_desc"><div class='inline'>
 <p>Förstör sessionen.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#user_exists-instance_method" title="#user_exists (instance method)">#<strong>user_exists</strong>(name)  &#x21d2; Boolean </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Check för att se om en användare finns.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
-      <a href="#verify_params-instance_method" title="#verify_params (instance method)">#<strong>verify_params</strong>(params, keys)  &#x21d2; { key: String, message: String }<sup>?</sup> </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Verifierar att valda nycklar inte är tomma.</p>
 </div></span>
   
 </li>
@@ -776,326 +584,21 @@
       <pre class="lines">
 
 
-112
-113
-114
-115
-116
-117</pre>
+128
+129
+130
+131
+132
+133</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 112</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 128</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_user'>add_user</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_pw_hash'>pw_hash</span> <span class='op'>=</span> <span class='const'>BCrypt</span><span class='op'>::</span><span class='const'>Password</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>insert into users (pw_hash, username) values($1, $2)</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_pw_hash'>pw_hash</span><span class='comma'>,</span> <span class='id identifier rubyid_username'>username</span><span class='rparen'>)</span>
 
   <span class='id identifier rubyid_sign_in'><span class='object_link'><a href="#sign_in-instance_method" title="Models#sign_in (method)">sign_in</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="admin?-instance_method">
-  
-    #<strong>admin?</strong>  &#x21d2; <tt>Boolean</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Check om inloggad användare är admin</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-49
-50
-51
-52
-53
-54</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 49</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_admin?'>admin?</span>
-  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='id identifier rubyid_auth?'><span class='object_link'><a href="#auth%3F-instance_method" title="Models#auth? (method)">auth?</a></span></span>
-
-  <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:user</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_value'>query_single_value</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select admin from users where id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_positive?'>positive?</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="allow_challenge-instance_method">
-  
-    #<strong>allow_challenge</strong>(id)  &#x21d2; <tt>Boolean</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Check för att se om användaren har tillgång till utmaningen</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>id</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>utmaningens id</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-184
-185
-186
-187
-188
-189
-190</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 184</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_allow_challenge'>allow_challenge</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='id identifier rubyid_auth?'><span class='object_link'><a href="#auth%3F-instance_method" title="Models#auth? (method)">auth?</a></span></span>
-
-  <span class='id identifier rubyid_ch'>ch</span> <span class='op'>=</span> <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_value'>query_single_value</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select challenged_id from challenges where id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_me'>me</span> <span class='op'>=</span> <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:user</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span>
-  <span class='id identifier rubyid_ch'>ch</span> <span class='op'>==</span> <span class='id identifier rubyid_me'>me</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="auth?-instance_method">
-  
-    #<strong>auth?</strong>  &#x21d2; <tt>Boolean</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Check om en användare är inloggad</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-42
-43
-44</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 42</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_auth?'>auth?</span>
-  <span class='op'>!</span><span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:user</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="can_modify-instance_method">
-  
-    #<strong>can_modify</strong>(user)  &#x21d2; <tt>Boolean</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Check om inloggad användare har högre rank än en annan användare</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>user</span>
-      
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-  
-    
-    
-    <p class="tag_title">Options Hash (<tt>user</tt>):</p>
-    <ul class="option">
-      
-        <li>
-          <span class="name">id</span>
-          <span class="type">(<tt>String</tt>)</span>
-          <span class="default">
-            
-          </span>
-          
-            &mdash; <div class='inline'>
-<p>användarens id</p>
-</div>
-          
-        </li>
-      
-    </ul>
-  
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-61
-62
-63
-64
-65
-66
-67
-68</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 61</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_can_modify'>can_modify</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>if</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='op'>!</span><span class='id identifier rubyid_auth?'><span class='object_link'><a href="#auth%3F-instance_method" title="Models#auth? (method)">auth?</a></span></span>
-
-  <span class='id identifier rubyid_user_rank'>user_rank</span> <span class='op'>=</span> <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_value'>query_single_value</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select admin from users where id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_user'>user</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_me_rank'>me_rank</span> <span class='op'>=</span> <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_value'>query_single_value</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select admin from users where id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:user</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-
-  <span class='id identifier rubyid_me_rank'>me_rank</span> <span class='op'>&gt;</span> <span class='id identifier rubyid_user_rank'>user_rank</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1167,12 +670,12 @@
       <pre class="lines">
 
 
-158
-159
-160</pre>
+175
+176
+177</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 158</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 175</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_challenge'>create_challenge</span><span class='lparen'>(</span><span class='id identifier rubyid_challenger'>challenger</span><span class='comma'>,</span> <span class='id identifier rubyid_challenged'>challenged</span><span class='comma'>,</span> <span class='id identifier rubyid_move'>move</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>insert into challenges (challenger_id, challenged_id, challenger_move) values (?, ?, ?)</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_challenger'>challenger</span><span class='comma'>,</span> <span class='id identifier rubyid_challenged'>challenged</span><span class='comma'>,</span> <span class='id identifier rubyid_move'>move</span><span class='rparen'>)</span>
@@ -1228,12 +731,12 @@
       <pre class="lines">
 
 
-11
-12
-13</pre>
+90
+91
+92</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 11</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 90</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_db'>db</span>
   <span class='ivar'>@db</span> <span class='op'>||=</span> <span class='const'>Extralite</span><span class='op'>::</span><span class='const'>Database</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>db/dev.sqlite</span><span class='tstring_end'>&#39;</span></span>
@@ -1309,21 +812,21 @@
       <pre class="lines">
 
 
-233
-234
-235
-236
-237
-238
-239
-240
-241
-242
-243
-244</pre>
+220
+221
+222
+223
+224
+225
+226
+227
+228
+229
+230
+231</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 233</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 220</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_determine_winner'>determine_winner</span><span class='lparen'>(</span><span class='id identifier rubyid_players'>players</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_winning_moves'>winning_moves</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>rock:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>paper</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>paper:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>scissor</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>scissor:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>rock</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span>
@@ -1385,101 +888,19 @@
       <pre class="lines">
 
 
-146
-147
-148
-149
-150</pre>
+163
+164
+165
+166
+167</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 146</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 163</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_disable_user_1_week'>disable_user_1_week</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>unless</span> <span class='id identifier rubyid_admin?'><span class='object_link'><a href="#admin%3F-instance_method" title="Models#admin? (method)">admin?</a></span></span>
+  <span class='kw'>return</span> <span class='kw'>unless</span> <span class='id identifier rubyid_admin?'><span class='object_link'><a href="Checks.html#admin%3F-instance_method" title="Checks#admin? (method)">admin?</a></span></span>
 
   <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>update users set disabled = date(&#39;now&#39;, &#39;+1 week&#39;) where id = ?</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="disabled?-instance_method">
-  
-    #<strong>disabled?</strong>(u_id)  &#x21d2; <tt>Boolean</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Check om en användare är avstängd</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>u_id</span>
-      
-      
-        <span class='type'>(<tt>Integer</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>användarens id</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-74
-75
-76
-77
-78
-79</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 74</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_disabled?'>disabled?</span><span class='lparen'>(</span><span class='id identifier rubyid_u_id'>u_id</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_disabled'>disabled</span> <span class='op'>=</span> <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_value'>query_single_value</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select disabled_until from users where id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_u_id'>u_id</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='kw'>false</span> <span class='kw'>unless</span> <span class='id identifier rubyid_disabled'>disabled</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span> <span class='op'>||</span> <span class='id identifier rubyid_disabled'>disabled</span> <span class='op'>&lt;</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>1</span><span class='tstring_end'>&#39;</span></span>
-
-  <span class='kw'>true</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1562,16 +983,16 @@
       <pre class="lines">
 
 
-252
-253
-254
-255
-256
-257
-258</pre>
+239
+240
+241
+242
+243
+244
+245</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 252</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 239</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_end_challenge'>end_challenge</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_move'>move</span><span class='comma'>,</span> <span class='id identifier rubyid_winner_elo_change'>winner_elo_change</span><span class='comma'>,</span> <span class='id identifier rubyid_loser_elo_change'>loser_elo_change</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>update challenges set challenged_move = $4, challenged_elo_change = $2, challenger_elo_change = $3, timestamp = CURRENT_TIMESTAMP where id = $1</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
@@ -1633,29 +1054,29 @@
       <pre class="lines">
 
 
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
 287
 288
 289
 290
 291
 292
-293
-294
-295
-296
-297
-298
-299
-300
-301
-302
-303
-304
-305
-306</pre>
+293</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 287</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 274</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fake_challenge'>fake_challenge</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_winner'>winner</span><span class='comma'>,</span> <span class='id identifier rubyid_loser'>loser</span> <span class='op'>=</span> <span class='id identifier rubyid_play_match'><span class='object_link'><a href="#play_match-instance_method" title="Models#play_match (method)">play_match</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_result'>result</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1748,12 +1169,12 @@
       <pre class="lines">
 
 
-176
-177
-178</pre>
+193
+194
+195</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 176</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 193</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch_challenge'>fetch_challenge</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_row'>query_single_row</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select u.username, u.id as opponent_id, c.challenger_move from challenges c left join users u on c.challenger_id = u.id where c.id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
@@ -1819,14 +1240,14 @@
       <pre class="lines">
 
 
-166
-167
-168
-169
-170</pre>
+183
+184
+185
+186
+187</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 166</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 183</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch_challenges'>fetch_challenges</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>unless</span> <span class='id identifier rubyid_user'>user</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_user'>user</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span>
@@ -1841,7 +1262,7 @@
       <div class="method_details ">
   <h3 class="signature " id="fetch_latest_matches-instance_method">
   
-    #<strong>fetch_latest_matches</strong>  &#x21d2; <tt>Array&lt;Hash&gt;</tt> 
+    #<strong>fetch_latest_matches</strong>(user = nil)  &#x21d2; <tt>Array&lt;Hash&gt;</tt> 
   
 
   
@@ -1850,13 +1271,30 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Hämtar senaste matcherna</p>
+<p>Hämtar senaste matcherna, om en användare är angiven hämtas bara dens matcher</p>
 
 
   </div>
 </div>
 <div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
   
+    <li>
+      
+        <span class='name'>user</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>, <tt>nil</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>nil</tt>)</em>
+      
+      
+    </li>
+  
+</ul>
+
 <p class="tag_title">Returns:</p>
 <ul class="return">
   
@@ -1879,12 +1317,6 @@
       <pre class="lines">
 
 
-195
-196
-197
-198
-199
-200
 201
 202
 203
@@ -1893,25 +1325,29 @@
 206
 207
 208
-209</pre>
+209
+210
+211
+212
+213
+214</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 195</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 201</span>
 
-<span class='kw'>def</span> <span class='id identifier rubyid_fetch_latest_matches'>fetch_latest_matches</span>
-  <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select
+<span class='kw'>def</span> <span class='id identifier rubyid_fetch_latest_matches'>fetch_latest_matches</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_query_str'>query_str</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>select rs.id, rs.timestamp, challenged_elo_change, challenger_elo_change,
+                w.username as challenged_username, l.username as challenger_username,
+                challenged_id, challenger_id,
+                challenger_move, challenged_move
+                from challenges rs
+                left join users w on rs.challenged_id = w.id
+                left join users l on rs.challenger_id = l.id
+                where done = 1</span><span class='tstring_end'>&quot;</span></span>
 
-            rs.timestamp, challenged_elo_change, challenger_elo_change,
-            w.username as challenged_username, l.username as challenger_username,
-            challenged_id, challenger_id,
-            challenger_move, challenged_move
+  <span class='id identifier rubyid_query_str'>query_str</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'> and (l.id = $1 or w.id = $1)</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_user'>user</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
 
-            from challenges rs
-            left join users w on rs.challenged_id = w.id
-            left join users l on rs.challenger_id = l.id
-
-            where done = 1
-            order by rs.timestamp desc limit 5</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+  <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_query_str'>query_str</span><span class='embexpr_end'>}</span><span class='tstring_content'> order by rs.timestamp desc limit 5</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1984,12 +1420,12 @@
       <pre class="lines">
 
 
-93
-94
-95</pre>
+109
+110
+111</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 93</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 109</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch_user'>fetch_user</span><span class='lparen'>(</span><span class='id identifier rubyid_uid'>uid</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_row'>query_single_row</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select * from users where id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_uid'>uid</span><span class='rparen'>)</span>
@@ -2067,97 +1503,19 @@
       <pre class="lines">
 
 
-101
-102
-103
-104
-105</pre>
+117
+118
+119
+120
+121</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 101</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 117</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch_users'>fetch_users</span><span class='lparen'>(</span><span class='label'>disabled:</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_str'>str</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select * from users order by elo desc</span><span class='tstring_end'>&#39;</span></span>
   <span class='comment'># str += &quot; where disabled_until &lt; CURRENT_TIMESTAMP&quot; unless disabled
 </span>  <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='id identifier rubyid_str'>str</span><span class='rparen'>)</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="fetch_users_latest_matches-instance_method">
-  
-    #<strong>fetch_users_latest_matches</strong>(uid)  &#x21d2; <tt>Array&lt;Hash&gt;</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Hämtar senaste matcherna för en användare</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Array&lt;Hash&gt;</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-214
-215
-216
-217
-218
-219
-220
-221
-222
-223
-224
-225
-226
-227</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 214</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_fetch_users_latest_matches'>fetch_users_latest_matches</span><span class='lparen'>(</span><span class='id identifier rubyid_uid'>uid</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select
-            rs.timestamp, challenged_elo_change, challenger_elo_change,
-            w.username as challenged_username, l.username as challenger_username,
-            challenged_id, challenger_id,
-            challenger_move, challenged_move
-
-            from challenges rs
-            left join users w on rs.challenged_id = w.id
-            left join users l on rs.challenger_id = l.id
-
-            where done = 1 or l.id = $1 or w.id = $1
-            order by rs.timestamp desc limit 5</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_uid'>uid</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2220,19 +1578,19 @@
       <pre class="lines">
 
 
-312
-313
-314
-315
-316
-317
-318
-319
-320
-321</pre>
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 312</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 299</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_move_to_sv'>move_to_sv</span><span class='lparen'>(</span><span class='id identifier rubyid_move'>move</span><span class='rparen'>)</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_move'>move</span>
@@ -2351,12 +1709,12 @@
       <pre class="lines">
 
 
-22
-23
-24</pre>
+101
+102
+103</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 22</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 101</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_partial'>partial</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>path:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/components</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>locals:</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='const'>Slim</span><span class='op'>::</span><span class='const'>Template</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_settings'>settings</span><span class='period'>.</span><span class='id identifier rubyid_views'>views</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_path'>path</span><span class='embexpr_end'>}</span><span class='tstring_content'>/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'>.slim</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_render'>render</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_locals'>locals</span><span class='rparen'>)</span>
@@ -2438,26 +1796,26 @@
       <pre class="lines">
 
 
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
 265
 266
 267
-268
-269
-270
-271
-272
-273
-274
-275
-276
-277
-278
-279
-280
-281</pre>
+268</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 265</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 252</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_play_match'>play_match</span><span class='lparen'>(</span><span class='id identifier rubyid_winner'>winner</span><span class='comma'>,</span> <span class='id identifier rubyid_loser'>loser</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_winner_elo'>winner_elo</span> <span class='op'>=</span> <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_value'>query_single_value</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select elo from users where id = $1</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_winner'>winner</span><span class='rparen'>)</span>
@@ -2484,7 +1842,7 @@
       <div class="method_details ">
   <h3 class="signature " id="sign_in-instance_method">
   
-    #<strong>sign_in</strong>(username, password)  &#x21d2; <tt>void</tt> 
+    #<strong>sign_in</strong>(username, password)  &#x21d2; <tt>nil</tt> 
   
 
   
@@ -2492,7 +1850,7 @@
   
 </h3><div class="docstring">
   <div class="discussion">
-    <p class="note returns_void">This method returns an undefined value.</p>
+    
 <p>Loggar in en användare</p>
 
 
@@ -2526,6 +1884,19 @@
   
 </ul>
 
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>nil</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
 
 
 
@@ -2535,19 +1906,20 @@
       <pre class="lines">
 
 
-124
-125
-126
-127
-128
-129
-130
-131
-132
-133</pre>
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 124</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 140</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sign_in'>sign_in</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
   <span class='comment'># är lösenordet rätt?
@@ -2558,6 +1930,7 @@
 
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_row'>query_single_row</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select * from users where username = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_username'>username</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:user</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='id identifier rubyid_user'>user</span>
+  <span class='kw'>nil</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2592,189 +1965,15 @@
       <pre class="lines">
 
 
-138
-139
-140</pre>
+155
+156
+157</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 138</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 155</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sign_out'>sign_out</span>
   <span class='id identifier rubyid_session'>session</span><span class='op'>&amp;.</span><span class='id identifier rubyid_destroy'>destroy</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="user_exists-instance_method">
-  
-    #<strong>user_exists</strong>(name)  &#x21d2; <tt>Boolean</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Check för att se om en användare finns</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>name</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>Boolean</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-85
-86
-87</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 85</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_user_exists'>user_exists</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span>
-  <span class='op'>!</span><span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_value'>query_single_value</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select id from users where username = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_name'>name</span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_nil?'>nil?</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="verify_params-instance_method">
-  
-    #<strong>verify_params</strong>(params, keys)  &#x21d2; <tt>{ key: String, message: String }</tt><sup>?</sup> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Verifierar att valda nycklar inte är tomma</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>params</span>
-      
-      
-        <span class='type'>(<tt>Hash&lt;Symbol, String&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Värdet att testa</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>keys</span>
-      
-      
-        <span class='type'>(<tt>Array&lt;String&gt;</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Nycklarna att testa</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-<p class="tag_title">Returns:</p>
-<ul class="return">
-  
-    <li>
-      
-      
-        <span class='type'>(<tt>{ key: String, message: String }</tt>, <tt>nil</tt>)</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'>
-<p>Error om fel, nil om inga fel</p>
-</div>
-      
-    </li>
-  
-</ul>
-
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-32
-33
-34
-35
-36
-37</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 32</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_verify_params'>verify_params</span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='id identifier rubyid_keys'>keys</span><span class='rparen'>)</span>
-  <span class='id identifier rubyid_keys'>keys</span><span class='period'>.</span><span class='id identifier rubyid_each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_key'>key</span><span class='op'>|</span>
-    <span class='kw'>return</span> <span class='lbrace'>{</span> <span class='label'>key:</span> <span class='id identifier rubyid_key'>key</span><span class='comma'>,</span> <span class='label'>message:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_key'>key</span><span class='embexpr_end'>}</span><span class='tstring_content'> is invalid</span><span class='tstring_end'>&quot;</span></span> <span class='rbrace'>}</span> <span class='kw'>if</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='id identifier rubyid_key'>key</span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
-  <span class='kw'>end</span>
-  <span class='kw'>nil</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -2786,7 +1985,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu Apr 21 14:56:17 2022 by
+  Generated on Thu Apr 21 17:22:44 2022 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.7.0).
 </div>

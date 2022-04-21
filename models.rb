@@ -2,27 +2,9 @@ require 'extralite'
 require 'bcrypt'
 require_relative 'elo'
 
-# Modeller
+# Checkar och verifieringar
 #
-module Models
-  # hjälpfunktion för att använda databasen
-  #
-  # @return [Class] databas
-  def db
-    @db ||= Extralite::Database.new 'db/dev.sqlite'
-  end
-
-  # Enklare sätt att lägga in vyer inuti andra vyer
-  #
-  # @param [String] name Filens namn
-  # @param [String] path Filens mapp, relativt till root
-  # @param [Hash] locals Lokala variabler till vyn
-  #
-  # @return [String] html
-  def partial(name, path: '/components', locals: {})
-    Slim::Template.new("#{settings.views}#{path}/#{name}.slim").render(self, locals)
-  end
-
+module Checks
   # Verifierar att valda nycklar inte är tomma
   #
   # @param [Hash<Symbol, String>] params Värdet att testa
@@ -84,6 +66,40 @@ module Models
   # @return [Boolean]
   def user_exists(name)
     !db.query_single_value('select id from users where username = ?', name).nil?
+  end
+
+  # Check för att se om användaren har tillgång till utmaningen
+  #
+  # @param [Integer] id utmaningens id
+  # @return [Boolean]
+  def allow_challenge(id)
+    return false unless auth?
+
+    ch = db.query_single_value('select challenged_id from challenges where id = ?', id)
+    me = session[:user][:id]
+    ch == me
+  end
+end
+
+# Modeller
+#
+module Models
+  # hjälpfunktion för att använda databasen
+  #
+  # @return [Class] databas
+  def db
+    @db ||= Extralite::Database.new 'db/dev.sqlite'
+  end
+
+  # Enklare sätt att lägga in vyer inuti andra vyer
+  #
+  # @param [String] name Filens namn
+  # @param [String] path Filens mapp, relativt till root
+  # @param [Hash] locals Lokala variabler till vyn
+  #
+  # @return [String] html
+  def partial(name, path: '/components', locals: {})
+    Slim::Template.new("#{settings.views}#{path}/#{name}.slim").render(self, locals)
   end
 
   # Hämta en användare från databasen beroende på dess id
@@ -178,24 +194,12 @@ module Models
     db.query_single_row('select u.username, u.id as opponent_id, c.challenger_move from challenges c left join users u on c.challenger_id = u.id where c.id = ?', id)
   end
 
-  # Check för att se om användaren har tillgång till utmaningen
-  #
-  # @param [Integer] id utmaningens id
-  # @return [Boolean]
-  def allow_challenge(id)
-    return false unless auth?
-
-    ch = db.query_single_value('select challenged_id from challenges where id = ?', id)
-    me = session[:user][:id]
-    ch == me
-  end
-
   # Hämtar senaste matcherna, om en användare är angiven hämtas bara dens matcher
   #
   # @param [Integer, nil] user
   # @return [Array<Hash>]
   def fetch_latest_matches(user = nil)
-    query_str = "select id, rs.timestamp, challenged_elo_change, challenger_elo_change,
+    query_str = "select rs.id, rs.timestamp, challenged_elo_change, challenger_elo_change,
                   w.username as challenged_username, l.username as challenger_username,
                   challenged_id, challenger_id,
                   challenger_move, challenged_move
