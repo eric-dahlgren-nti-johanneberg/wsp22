@@ -65,7 +65,9 @@ module Checks
   # @param [String] name
   # @return [Boolean]
   def user_exists(name)
-    !db.query_single_value('select id from users where username = ?', name).nil?
+    val = !db.query_single_value('select id from users where username = ?', name).nil?
+    p val
+    val
   end
 
   # Check för att se om användaren har tillgång till utmaningen
@@ -141,6 +143,7 @@ module Models
     # är lösenordet rätt?
     db_password = db.query_single_value('select pw_hash from users where username = ?', username)
     p BCrypt::Password.create(password)
+
     match = BCrypt::Password.new(db_password) == password
     return 'No match' unless match
 

@@ -62,25 +62,54 @@ get '/user/:uid' do |uid|
   slim :'users/profile'
 end
 
+before '/user/signin' do
+  session[:signup_error] = ''
+  error = verify_params(params, %w[username password])
+  if error
+    session[:signin_error] = 'Användare eller lösenord saknas'
+    return redirect '/sign-in'
+  end
+  session[:attempts] = 0 if Time.new.to_i - session[:last_attempt].to_i > 300
+  if session[:attempts] > 5
+    session[:signin_error] = 'För många försök. Försök igen senare.'
+    return redirect '/sign-in'
+  end
+  unless user_exists(params[:username])
+    session[:signin_error] = 'Användare eller lösenord är fel'
+    session[:last_attempt] = Time.new
+    session[:attempts] += 1
+    return redirect '/sign-in'
+  end
+end
+
 # Loggar in användaren
 #
 # @param [String] username
 # @param [String] password
 post '/user/signin' do
-  error = verify_params(params, %w[username password])
-  return redirect '/sign-in' if error
-
   sign_in_err = sign_in(params[:username], params[:password])
-  return redirect '/sign-in' if sign_in_err
+  if sign_in_err
+    session[:attempts] += 1
+    session[:last_attempt] = Time.new
+    session[:signin_error] = 'Användare eller lösenord är fel'
+    return redirect '/sign-in'
+  end
+
+  session[:attempts] = 0
+  session[:signin_error] = ''
 
   redirect '/'
 end
 
-before '/users/new' do
+before '/user/signup' do
+  next unless request.post?
+
+  session[:signin_error] = ''
+
   error = verify_params(params, %w[username password])
   if error
     session[:signup_error] = 'Användare eller lösenord saknas'
-    redirect '/sign-in' if error
+    return redirect '/sign-in' if error
   end
   if user_exists(params[:username])
     session[:signup_error] = 'Användarnamnet används redan'
@@ -94,7 +123,7 @@ end
 #
 # @param [String] username
 # @param [String] password
-post '/user/new' do
+post '/user/signup' do
   session[:signup_error] = ''
   add_user(params[:username], params[:password])
   redirect '/'
@@ -191,11 +220,12 @@ end
 
 # Check om användaren kan skapa ett resultat
 before '/result' do
-  redirect '/sign-in' unless admin?
+  return redirect '/sign-in' unless admin?
+
   verified_error = verify_params(params, %w[winner loser challenger_move challenged_move]).nil?
   unless verified_error.nil?
     session[:result_error] = 'Alla fält måste fyllas i'
-    redirect '/'
+    return redirect '/'
   end
 end
 
