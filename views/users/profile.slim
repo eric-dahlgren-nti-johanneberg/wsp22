@@ -22,12 +22,5 @@ main class="max-w-screen-md m-auto"
                         == partial "button", locals: { label: "Utmana", type: "submit" }
         div class="mt-4"
             h1 class="text-2xl font-semibold" = "#{@user[:username]}s senaste matcher" 
-            - @user_matches.each do |result|
-                li class="flex items-center gap-4 flex-1"
-                    div
-                        p = result[:timestamp]
-                    div class="flex gap-4 items-center"
-                        == partial "user", locals: { user: { id: result[:challenger_id], username: result[:challenger_username], elo_change: result[:challenger_elo_change], move: result[:challenger_move] } } 
-                        p vs
-                        == partial "user", locals: { user: { id: result[:challenged_id], username: result[:challenged_username], elo_change: result[:challenged_elo_change], move: result[:challenged_move] } } 
-                
+            - @user_matches.each do |result|        
+                == partial "result", locals: { result: result }

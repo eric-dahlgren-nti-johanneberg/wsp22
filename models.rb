@@ -190,41 +190,23 @@ module Models
     ch == me
   end
 
-  # Hämtar senaste matcherna
+  # Hämtar senaste matcherna, om en användare är angiven hämtas bara dens matcher
   #
+  # @param [Integer, nil] user
   # @return [Array<Hash>]
-  def fetch_latest_matches
-    db.query('select
+  def fetch_latest_matches(user = nil)
+    query_str = "select id, rs.timestamp, challenged_elo_change, challenger_elo_change,
+                  w.username as challenged_username, l.username as challenger_username,
+                  challenged_id, challenger_id,
+                  challenger_move, challenged_move
+                  from challenges rs
+                  left join users w on rs.challenged_id = w.id
+                  left join users l on rs.challenger_id = l.id
+                  where done = 1"
 
-              rs.timestamp, challenged_elo_change, challenger_elo_change,
-              w.username as challenged_username, l.username as challenger_username,
-              challenged_id, challenger_id,
-              challenger_move, challenged_move
+    query_str += ' and (l.id = $1 or w.id = $1)' unless user.nil?
 
-              from challenges rs
-              left join users w on rs.challenged_id = w.id
-              left join users l on rs.challenger_id = l.id
-
-              where done = 1
-              order by rs.timestamp desc limit 5')
-  end
-
-  # Hämtar senaste matcherna för en användare
-  #
-  # @return [Array<Hash>]
-  def fetch_users_latest_matches(uid)
-    db.query('select
-              rs.timestamp, challenged_elo_change, challenger_elo_change,
-              w.username as challenged_username, l.username as challenger_username,
-              challenged_id, challenger_id,
-              challenger_move, challenged_move
-
-              from challenges rs
-              left join users w on rs.challenged_id = w.id
-              left join users l on rs.challenger_id = l.id
-
-              where done = 1 or l.id = $1 or w.id = $1
-              order by rs.timestamp desc limit 5', uid)
+    db.query("#{query_str} order by rs.timestamp desc limit 5", user)
   end
 
   # Bestämmer vinnaren av en match

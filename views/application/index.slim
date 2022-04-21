@@ -15,11 +15,4 @@ section class="xl:grid grid-cols-[1fr_calc(192px_*_4)_1fr] flex flex-wrap max-w-
       h2 class="text-xl" Senaste matcher
       ul class="w-full space-y-2 my-2"
         - results.each do |result|
-          li class="flex items-center gap-4 flex-1"
-            div
-              p = result[:timestamp]
-            div class="flex gap-4 items-center"
-              == partial "user", locals: { user: { id: result[:challenger_id], username: result[:challenger_username], elo_change: result[:challenger_elo_change], move: result[:challenger_move] } } 
-              p vs
-              == partial "user", locals: { user: { id: result[:challenged_id], username: result[:challenged_username], elo_change: result[:challenged_elo_change], move: result[:challenged_move] } } 
-      
+          == partial "result", locals: { result: result }
