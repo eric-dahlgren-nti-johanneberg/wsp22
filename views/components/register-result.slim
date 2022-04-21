@@ -2,11 +2,28 @@
     section class="flex-1 bg-white rounded-md shadow-md p-2"
         h2 class="text-xl" Registrera resultat
         form action="/result" method="post" class="flex flex-col gap-2"
-            label for="winner" Vinnare
+            label for="winner" Spelare 1
             select#winner class="form-select" name="winner" class=""
                 option disabled=true selected=true Välj användare
-            label for="loser" Förlorare
+            
+            section class="flex flex-row gap-2 items-center"
+                input#p1-sten type="radio" name="challenger_move" value="rock"
+                label for="p1-sten" Sten
+                input#p1-sax type="radio" name="challenger_move" value="scissors"
+                label for="p1-sax" Sax
+                input#p1-pase type="radio" name="challenger_move" value="paper"
+                label for="p1-pase" Påse
+
+            label for="loser" Spelare 2
             select#loser class="form-select" disabled="true" name="loser"
-                option disabled=true selected=true Välj spelare 1 först
+                option disabled=true selected=true Välj spelare 2 först
+
+            section class="flex flex-row gap-2 items-center"
+                input#p2-sten type="radio" name="challenged_move" value="rock"
+                label for="p2-sten" Sten
+                input#p2-sax type="radio" name="challenged_move" value="scissors"
+                label for="p2-sax" Sax
+                input#p2-pase type="radio" name="challenged_move" value="paper"
+                label for="p2-pase" Påse
             == partial "button", locals: {label: "Registrera", type:"submit"}
     script src="js/register.js" 

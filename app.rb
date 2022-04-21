@@ -26,6 +26,7 @@ get '/' do
   users = fetch_users
   results = fetch_latest_matches
   challenges = fetch_challenges(session[:user]) || []
+  p results
 
   slim :"application/index", locals: { users: users, results: results, challenges: challenges }
 end
@@ -38,6 +39,10 @@ end
 
 get '/sign-in' do
   slim :"users/sign-in"
+end
+
+get '/sign-out' do
+  session&.destroy
 end
 
 get '/user/:uid' do |uid|
@@ -77,8 +82,8 @@ end
 #
 
 get '/challenge/:id' do |id|
-  redirect '/sign-in' unless check_auth(session)
-  redirect '/' unless check_user(id.to_i)
+  redirect '/sign-in' unless auth?
+  # redirect '/' if disabled?(id.to_i)
 
   @opponent = fetch_user(id.to_i)
   @action = "/challenge/#{id}"
@@ -88,7 +93,7 @@ end
 
 post '/challenge/:id' do |id|
   user = id.to_i
-  redirect '/sign-in' unless check_auth(session)
+  redirect '/sign-in' unless auth?
   redirect "/challenge/#{user}" unless params
 
   move = params[:move]
@@ -110,19 +115,30 @@ end
 
 post '/challenge/:id/answer' do |id|
   challenge = fetch_challenge(id.to_i)
+  move = params[:move]
 
-  p challenge
+  result = [{ id: challenge[:opponent_id], move: challenge[:challenger_move] }, { id: session[:user][:id], move: move }]
+
+  winner, loser = determine_winner(result)
+
+  w, l = play_match(winner[:id], loser[:id])
+  end_challenge(id.to_i, move, w, l)
 
   redirect "/user/#{session[:user][:id]}"
 end
 
 post '/result' do
+  redirect '/' unless admin?
+
   winner = params[:winner].to_i
   loser = params[:loser].to_i
 
   return redirect '/' if winner.nil? || loser.nil?
 
-  update_elo(winner, loser)
+  result = [{ id: winner, move: params[:challenger_move] }, { id: loser, move: params[:challenged_move] }]
+  result = determine_winner(result)
+
+  fake_challenge(result)
 
   redirect '/'
 end
@@ -134,17 +150,4 @@ end
 #
 
 post '/user/:id/comment' do |id|
-end
-
-#
-#   ----------------------------------------------------------------------------
-#                                  Achievements
-#   ----------------------------------------------------------------------------
-#
-
-get '/test' do
-  Achievement.init(db)
-  ExistAchievement.try_award(1)
-
-  redirect '/'
 end

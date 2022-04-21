@@ -2,11 +2,11 @@ main class='max-w-screen-md m-auto my-4'
     h1 class='text-xl font-semibold mb-4' Välj ditt drag mot #{@opponent[:username]}
     form id="play-form" class='flex flex-col' action="#{@action}" method='post' 
         section class='flex flex-row gap-4 h-20'
-            input type='radio' name='move' class='hidden' id='rock' value='rock'
+            input type='radio' name='move' class='hidden' id='rock' value='rock' selected=true
             label for='rock' class='flex-1 bg-pink-500 p-4 flex items-center justify-center'
                 h3 STEN
-            input type='radio' name='move' id='scissor' class='hidden' value='scissor'
-            label for='scissor' class='flex-1 bg-green-500 p-4 flex items-center justify-center'
+            input type='radio' name='move' id='scissors' class='hidden' value='scissors'
+            label for='scissors' class='flex-1 bg-green-500 p-4 flex items-center justify-center'
                 h3 SAX
             input type='radio' name='move' id='paper' class='hidden' value='paper'
             label for='paper' class='flex-1 bg-orange-500 p-4 flex items-center justify-center'
@@ -18,7 +18,7 @@ javascript:
         switch(move){
         case "rock":
             return "sten";
-        case "scissor":
+        case "scissors":
             return "sax";
         case "paper":
             return "påse";}

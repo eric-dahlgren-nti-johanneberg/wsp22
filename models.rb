@@ -90,7 +90,6 @@ module Models
     return unless admin?
 
     db.query("update users set disabled = date('now', '+1 week') where id = ?", id)
-
   end
 
   #
@@ -100,18 +99,18 @@ module Models
   #
 
   def create_challenge(challenger, challenged, move)
-    db.query('insert into challenges (challenger_id, challenged_id, move) values (?, ?, ?)', challenger, challenged, move)
+    db.query('insert into challenges (challenger_id, challenged_id, challenger_move) values (?, ?, ?)', challenger, challenged, move)
   end
 
   def fetch_challenges(user)
     return nil unless user
     return nil unless user[:id]
 
-    db.query('select ch.username, ch.id as opponent_id, c.id as challenge_id from challenges c left join users ch on c.challenger_id = ch.id where challenged_id = ?', user[:id])
+    db.query('select u.username, u.id as opponent_id, c.id as challenge_id from challenges c left join users u on c.challenger_id = u.id where challenged_id = ? and done = 0', user[:id])
   end
 
   def fetch_challenge(id)
-    db.query_single_row('select ch.username, ch.id, move as opponent_id from challenges c left join users ch on c.challenger_id = ch.id where c.id = ?', id)
+    db.query_single_row('select u.username, u.id as opponent_id, c.challenger_move from challenges c left join users u on c.challenger_id = u.id where c.id = ?', id)
   end
 
   def allow_challenge(id)
@@ -125,30 +124,56 @@ module Models
   def fetch_latest_matches
     db.query('select
 
-              rs.timestamp, winner_elo_change, loser_elo_change,
-              w.username as winner_username, l.username as loser_username,
-              winner, loser
+              rs.timestamp, challenged_elo_change, challenger_elo_change,
+              w.username as challenged_username, l.username as challenger_username,
+              challenged_id, challenger_id,
+              challenger_move, challenged_move
 
-              from results rs
-              left join users w on rs.winner = w.id
-              left join users l on rs.loser = l.id
+              from challenges rs
+              left join users w on rs.challenged_id = w.id
+              left join users l on rs.challenger_id = l.id
+
+              where done = 1
               order by rs.timestamp desc limit 5')
   end
 
   def fetch_users_latest_matches(uid)
     db.query('select
-    rs.timestamp, winner_elo_change, loser_elo_change,
-    w.username as winner_username, l.username as loser_username,
-    winner, loser
+              rs.timestamp, challenged_elo_change, challenger_elo_change,
+              w.username as challenged_username, l.username as challenger_username,
+              challenged_id, challenger_id,
+              challenger_move, challenged_move
 
-    from results rs
-    left join users w on rs.winner = w.id
-    left join users l on rs.loser = l.id
-    where l.id = $1 or w.id = $1
-    order by rs.timestamp desc limit 5', uid)
+              from challenges rs
+              left join users w on rs.challenged_id = w.id
+              left join users l on rs.challenger_id = l.id
+
+              where done = 1 or l.id = $1 or w.id = $1
+              order by rs.timestamp desc limit 5', uid)
   end
 
-  def update_elo(winner, loser)
+  def determine_winner(players)
+    winning_moves = { rock: 'paper', paper: 'scissor', scissor: 'rock' }
+
+    if winning_moves[:"#{players[0][:move]}"] == players[1][:move]
+      # spelare 2 vann
+      [{ id: players[1][:id], move: players[1][:move] }, { id: players[0][:id], move: players[0][:move] }]
+    else
+      # spelare 1 vann
+      [{ id: players[0][:id], move: players[0][:move] }, { id: players[1][:id], move: players[1][:move] }]
+
+    end
+  end
+
+  def end_challenge(id, move, winner_elo_change, loser_elo_change)
+    db.query('update challenges set challenged_move = $4, challenged_elo_change = $2, challenger_elo_change = $3, timestamp = CURRENT_TIMESTAMP where id = $1',
+             id,
+             winner_elo_change,
+             loser_elo_change,
+             move)
+  end
+
+  def play_match(winner, loser)
     winner_elo = db.query_single_value('select elo from users where id = $1', winner)
     loser_elo = db.query_single_value('select elo from users where id = $1', loser)
 
@@ -160,16 +185,31 @@ module Models
     winner_elo_change = match.updated_ratings[0] - winner_elo
     loser_elo_change = match.updated_ratings[1] - loser_elo
 
-    return unless winner_elo_change && loser_elo_change
-
-    db.query('insert into results (winner, loser, winner_elo_change, loser_elo_change) values ($1, $2, $3, $4)',
-             winner,
-             loser,
-             winner_elo_change,
-             loser_elo_change)
-
     db.query('update users set elo = $1 where id = $2', match.updated_ratings[0], winner)
     db.query('update users set elo = $1 where id = $2', match.updated_ratings[1], loser)
+
+    [winner_elo_change, loser_elo_change]
+  end
+
+  def fake_challenge(result)
+    winner, loser = play_match(result[0][:id], result[1][:id])
+
+    db.query('insert into challenges
+              (challenger_id,
+              challenged_id,
+              challenged_move,
+              challenger_move,
+              challenged_elo_change,
+              challenger_elo_change,
+              done)
+              values (?, ?, ?, ?, ?, ?, 1)
+              ',
+             result[0][:id],
+             result[1][:id],
+             result[0][:move],
+             result[1][:move],
+             winner,
+             loser)
   end
 
   #
@@ -180,5 +220,22 @@ module Models
 
   def fetch_avalible_achievements
     db.query('select * from badges')
+  end
+
+  #
+  #
+  # ----- Annat -----
+  #
+  #
+
+  def move_to_sv(move)
+    case move
+    when 'rock'
+      'Sten'
+    when 'scissors'
+      'Sax'
+    when 'paper'
+      'Påse'
+    end
   end
 end

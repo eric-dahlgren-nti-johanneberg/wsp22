@@ -1,2 +1,2 @@
 a href="/user/#{user[:id]}" class="p-2 shadow-sm rounded-sm border border-gray-50 hover:bg-gray-100"
-    p = "#{user[:username]} (#{user[:elo_change] > 0 ? '+' : ''}#{user[:elo_change]} ELO)"
+    p = "#{user[:username]} (#{move_to_sv(user[:move])}, #{user[:elo_change] > 0 ? '+' : ''}#{user[:elo_change]} ELO)"

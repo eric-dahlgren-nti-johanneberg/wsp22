@@ -11,8 +11,8 @@ const loserSelect = document.getElementById("loser");
 
 let users = [];
 
-winnerSelect.onchange = (ev) => {
-  const selectedUser = parseInt(ev.currentTarget.value);
+const updateLosers = () => {
+  const selectedUser = parseInt(winnerSelect.value);
   const avalible = users.filter((u) => u.id !== selectedUser);
   const options = avalible.map(
     (u) => `<option value="${u.id}">${u.username} - ${u.elo} ELO</option>`
@@ -21,15 +21,19 @@ winnerSelect.onchange = (ev) => {
   loserSelect.disabled = false;
 };
 
+winnerSelect.onchange = updateLosers;
+
 const fetchUsers = async () => {
   fetch("/api/users")
     .then((res) => res.json())
     .then((json) => {
-      users = json
+      users = json;
       const options = json.map(
         (u) => `<option value="${u.id}">${u.username} - ${u.elo} ELO</option>`
       );
-      winnerSelect.innerHTML = `${options}`;
+      const defaultOption =
+        '<option disabled="true" selected="true">Välj användare</option>';
+      winnerSelect.innerHTML = `${[defaultOption, ...options].join()}`;
     });
 };
 
