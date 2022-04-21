@@ -12,21 +12,13 @@ end
 enable :sessions
 
 include Models # Wat dis?
-helpers do
-  def partial(name, path: '/components', locals: {})
-    Slim::Template.new("#{settings.views}#{path}/#{name}.slim").render(self, locals)
-  end
 
-  def auth?
-    !session[:user].nil?
-  end
-end
-
+# Visar framsidan
+#
 get '/' do
   users = fetch_users
   results = fetch_latest_matches
   challenges = fetch_challenges(session[:user]) || []
-  p results
 
   slim :"application/index", locals: { users: users, results: results, challenges: challenges }
 end
@@ -37,12 +29,17 @@ end
 #   ----------------------------------------------------------------------------
 #
 
+# Visar inloggningssidan
+#
 get '/sign-in' do
   slim :"users/sign-in"
 end
 
-get '/sign-out' do
+# Loggar ut en användare
+#
+get '/user/signout' do
   session&.destroy
+  redirect '/'
 end
 
 get '/user/:uid' do |uid|
@@ -61,11 +58,20 @@ post '/user/signin' do
   redirect '/'
 end
 
-post '/user/new' do
+before '/users/new' do
   error = verify_params(params, %w[username password])
-  redirect '/sign-in' if error
-  return redirect '/sign-in' if user_exists(params[:username])
+  if error
+    session[:signup_error] = 'Användare eller lösenord saknas'
+    redirect '/sign-in' if error
+  end
+  if user_exists(params[:username])
+    session[:signup_error] = 'Användarnamnet används redan'
+    return redirect '/sign-in'
+  end
+end
 
+post '/user/new' do
+  session[:signup_error] = ''
   add_user(params[:username], params[:password])
   redirect '/'
 end
@@ -75,16 +81,15 @@ get '/api/users' do
   users.to_json
 end
 
-#
-#   ----------------------------------------------------------------------------
-#                                     Matcher
-#   ----------------------------------------------------------------------------
-#
+before '/challenge/:id' do
+  redirect '/sign-in' unless auth?
+  # redirect '/' if disabled?(id.to_i) && request.get?
+  next unless request.post?
+
+  redirect "/challenge/#{user}" unless params
+end
 
 get '/challenge/:id' do |id|
-  redirect '/sign-in' unless auth?
-  # redirect '/' if disabled?(id.to_i)
-
   @opponent = fetch_user(id.to_i)
   @action = "/challenge/#{id}"
 
@@ -93,15 +98,13 @@ end
 
 post '/challenge/:id' do |id|
   user = id.to_i
-  redirect '/sign-in' unless auth?
-  redirect "/challenge/#{user}" unless params
-
   move = params[:move]
 
   create_challenge(session[:user][:id], user, move)
 
   redirect '/'
 end
+
 before '/challenge/:id/*' do
   redirect '/' unless allow_challenge(params[:id])
 end
@@ -127,27 +130,36 @@ post '/challenge/:id/answer' do |id|
   redirect "/user/#{session[:user][:id]}"
 end
 
-post '/result' do
+before '/challenge/:id/delete' do
   redirect '/' unless admin?
+end
 
+post '/challenge/:id/delete' do |id|
+  delete_challenge(id.to_i)
+  redirect '/'
+end
+
+before '/result' do
+  redirect '/sign-in' unless admin?
+  verified_error = verify_params(params, %w[winner loser challenger_move challenged_move]).nil?
+  unless verified_error.nil?
+    session[:result_error] = 'Alla fält måste fyllas i'
+    redirect '/'
+  end
+
+  p params
+end
+
+post '/result' do
   winner = params[:winner].to_i
   loser = params[:loser].to_i
 
-  return redirect '/' if winner.nil? || loser.nil?
+  session[:result_error] = ''
 
-  result = [{ id: winner, move: params[:challenger_move] }, { id: loser, move: params[:challenged_move] }]
-  result = determine_winner(result)
+  players = [{ id: winner, move: params[:challenger_move] }, { id: loser, move: params[:challenged_move] }]
+  result = determine_winner(players)
 
   fake_challenge(result)
 
   redirect '/'
-end
-
-#
-#   ----------------------------------------------------------------------------
-#                                  Kommentarer
-#   ----------------------------------------------------------------------------
-#
-
-post '/user/:id/comment' do |id|
 end

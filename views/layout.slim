@@ -12,7 +12,7 @@ html lang="en"
                 h1 Sten-Sax-Påse
             nav
             - if auth?
-                p = "Hej #{session[:user][:username]}"
+                a href="/user/#{session[:user][:id]}" = "Hej #{session[:user][:username]}"
             - else
                 a href="/sign-in" Logga in
         == yield

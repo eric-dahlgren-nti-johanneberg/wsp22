@@ -5,34 +5,47 @@ require_relative 'elo'
 # Modeller
 #
 module Models
+  # hjälpfunktion för att använda databasen
+  #
+  # @return [Class] databas
   def db
-    Extralite::Database.new 'db/dev.sqlite'
+    @db ||= Extralite::Database.new 'db/dev.sqlite'
   end
 
+  # Enklare sätt att lägga in vyer inuti andra vyer
+  #
+  # @param [String] name Filens namn
+  # @param [String] path Filens mapp, relativt till root
+  # @param [Hash] locals Lokala variabler till vyn
+  #
+  # @return [String] html
+  def partial(name, path: '/components', locals: {})
+    Slim::Template.new("#{settings.views}#{path}/#{name}.slim").render(self, locals)
+  end
+
+  # Verifierar att valda nycklar inte är tomma
+  #
+  # @param [Hash<Symbol, String>] params Värdet att testa
+  # @param [Array<String>] keys Nycklarna att testa
+  #
+  # @return [{ key: String, message: String }, nil] Error om fel, nil om inga fel
   def verify_params(params, keys)
     keys.each do |key|
-      return { key: key, message: "#{key} is invalid" } if params[key] == ''
+      return { key: key, message: "#{key} is invalid" } if params[key] == '' || params[key].nil?
     end
     nil
   end
 
+  # Check om en användare är inloggad
   #
-  #
-  # -------- USERS --------
-  #
-  #
-
+  # @return [Boolean]
   def auth?
     !session[:user].nil?
   end
 
-  def disabled?(u_id)
-    disabled = db.query_single_value('select disabled_until from users where id = ?', u_id)
-    return false unless disabled.nil? || disabled < '1'
-
-    true
-  end
-
+  # Check om inloggad användare är admin
+  #
+  # @return [Boolean]
   def admin?
     return false unless auth?
 
@@ -40,6 +53,11 @@ module Models
     db.query_single_value('select admin from users where id = ?', user).positive?
   end
 
+  # Check om inloggad användare har högre rank än en annan användare
+  #
+  # @param [Hash] user
+  # @option user [String] id användarens id
+  # @return [Boolean]
   def can_modify(user)
     return false if user.nil? || !auth?
 
@@ -49,20 +67,48 @@ module Models
     me_rank > user_rank
   end
 
+  # Check om en användare är avstängd
+  #
+  # @param [Integer] u_id användarens id
+  # @return [Boolean]
+  def disabled?(u_id)
+    disabled = db.query_single_value('select disabled_until from users where id = ?', u_id)
+    return false unless disabled.nil? || disabled < '1'
+
+    true
+  end
+
+  # Check för att se om en användare finns
+  #
+  # @param [String] name
+  # @return [Boolean]
+  def user_exists(name)
+    !db.query_single_value('select id from users where username = ?', name).nil?
+  end
+
+  # Hämta en användare från databasen beroende på dess id
+  #
+  # @param [Integer] uid användarens id
+  # @return [Hash] user
   def fetch_user(uid)
     db.query_single_row('select * from users where id = ?', uid)
   end
 
+  # Hämta flera användare från databasen
+  #
+  # @param [Boolean] disabled hämta även avstängda användare
+  # @return [Array<Hash>] användare
   def fetch_users(disabled: false)
     str = 'select * from users order by elo desc'
     # str += " where disabled_until < CURRENT_TIMESTAMP" unless disabled
     db.query(str)
   end
 
-  def user_exists(name)
-    !db.query_single_value('select id from users where username = ?', name).nil?
-  end
-
+  # Skapar en ny användare
+  #
+  # @param [String] username
+  # @param [String] password
+  # @return [void]
   def add_user(username, password)
     pw_hash = BCrypt::Password.create(password)
     db.query('insert into users (pw_hash, username) values($1, $2)', pw_hash, username)
@@ -70,6 +116,11 @@ module Models
     sign_in(username, password)
   end
 
+  # Loggar in en användare
+  #
+  # @param [String] username
+  # @param [String] password
+  # @return [nil]
   def sign_in(username, password)
     # är lösenordet rätt?
     db_password = db.query_single_value('select pw_hash from users where username = ?', username)
@@ -82,37 +133,55 @@ module Models
     nil
   end
 
+  # Förstör sessionen
+  #
+  # @return [void]
   def sign_out
     session&.destroy
   end
 
+  # Stänger av en användare 1 vecka
+  #
+  # @param [Integer] id
+  # @return [void]
   def disable_user_1_week(id)
     return unless admin?
 
     db.query("update users set disabled = date('now', '+1 week') where id = ?", id)
   end
 
+  # Skapar en utmaning
   #
-  #
-  # ------- Matches -------
-  #
-  #
-
+  # @param [Integer] challenger
+  # @param [Integer] challenged
+  # @param [String] move
+  # @return [void]
   def create_challenge(challenger, challenged, move)
     db.query('insert into challenges (challenger_id, challenged_id, challenger_move) values (?, ?, ?)', challenger, challenged, move)
   end
 
+  # Hämtar alla utmaningar för en viss användare
+  #
+  # @param [Hash] user
+  # @return [Array<Hash>]
   def fetch_challenges(user)
-    return nil unless user
-    return nil unless user[:id]
+    return [] unless user && user[:id]
 
     db.query('select u.username, u.id as opponent_id, c.id as challenge_id from challenges c left join users u on c.challenger_id = u.id where challenged_id = ? and done = 0', user[:id])
   end
 
+  # Hämtar en specifik utmaning
+  #
+  # @param [Integer] id utmaningens id
+  # @return [Hash] utmaningen
   def fetch_challenge(id)
     db.query_single_row('select u.username, u.id as opponent_id, c.challenger_move from challenges c left join users u on c.challenger_id = u.id where c.id = ?', id)
   end
 
+  # Check för att se om användaren har tillgång till utmaningen
+  #
+  # @param [Integer] id utmaningens id
+  # @return [Boolean]
   def allow_challenge(id)
     return false unless auth?
 
@@ -121,6 +190,9 @@ module Models
     ch == me
   end
 
+  # Hämtar senaste matcherna
+  #
+  # @return [Array<Hash>]
   def fetch_latest_matches
     db.query('select
 
@@ -137,6 +209,9 @@ module Models
               order by rs.timestamp desc limit 5')
   end
 
+  # Hämtar senaste matcherna för en användare
+  #
+  # @return [Array<Hash>]
   def fetch_users_latest_matches(uid)
     db.query('select
               rs.timestamp, challenged_elo_change, challenger_elo_change,
@@ -152,6 +227,10 @@ module Models
               order by rs.timestamp desc limit 5', uid)
   end
 
+  # Bestämmer vinnaren av en match
+  #
+  # @param [Array<Hash>] players Spelarna och deras drag
+  # @return [Array<Hash>] Samma array, men vinnaren är på index 0
   def determine_winner(players)
     winning_moves = { rock: 'paper', paper: 'scissor', scissor: 'rock' }
 
@@ -165,6 +244,12 @@ module Models
     end
   end
 
+  # Avslutar en utmaning i databasen
+  #
+  # @param [Integer] id
+  # @param [String] move
+  # @param [Integer] winner_elo_change
+  # @param [Integer] loser_elo_change
   def end_challenge(id, move, winner_elo_change, loser_elo_change)
     db.query('update challenges set challenged_move = $4, challenged_elo_change = $2, challenger_elo_change = $3, timestamp = CURRENT_TIMESTAMP where id = $1',
              id,
@@ -173,6 +258,11 @@ module Models
              move)
   end
 
+  # Uppdaterar spelarnas elo-rankning i databasen
+  #
+  # @param [Integer] winner
+  # @param [Integer] loser
+  # @return [Array<Integer>] spelarnas elo-förändring
   def play_match(winner, loser)
     winner_elo = db.query_single_value('select elo from users where id = $1', winner)
     loser_elo = db.query_single_value('select elo from users where id = $1', loser)
@@ -191,6 +281,10 @@ module Models
     [winner_elo_change, loser_elo_change]
   end
 
+  # Lägger till ett resultat utan att någon spelare blir utmanad
+  #
+  # @param [Array<Hash>] result det önskade resultatet
+  # @return [void]
   def fake_challenge(result)
     winner, loser = play_match(result[0][:id], result[1][:id])
 
@@ -212,22 +306,10 @@ module Models
              loser)
   end
 
+  # Omvandlar ett drag till svenska
   #
-  #
-  # ----- Achievements -----
-  #
-  #
-
-  def fetch_avalible_achievements
-    db.query('select * from badges')
-  end
-
-  #
-  #
-  # ----- Annat -----
-  #
-  #
-
+  # @param ['rock', 'paper', 'scissors'] move
+  # @return ['Sten', 'Papper', 'Påse']
   def move_to_sv(move)
     case move
     when 'rock'
