@@ -584,15 +584,15 @@
       <pre class="lines">
 
 
-128
-129
 130
 131
 132
-133</pre>
+133
+134
+135</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 128</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 130</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_add_user'>add_user</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_pw_hash'>pw_hash</span> <span class='op'>=</span> <span class='const'>BCrypt</span><span class='op'>::</span><span class='const'>Password</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
@@ -670,12 +670,12 @@
       <pre class="lines">
 
 
-175
-176
-177</pre>
+178
+179
+180</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 175</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 178</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_create_challenge'>create_challenge</span><span class='lparen'>(</span><span class='id identifier rubyid_challenger'>challenger</span><span class='comma'>,</span> <span class='id identifier rubyid_challenged'>challenged</span><span class='comma'>,</span> <span class='id identifier rubyid_move'>move</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>insert into challenges (challenger_id, challenged_id, challenger_move) values (?, ?, ?)</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_challenger'>challenger</span><span class='comma'>,</span> <span class='id identifier rubyid_challenged'>challenged</span><span class='comma'>,</span> <span class='id identifier rubyid_move'>move</span><span class='rparen'>)</span>
@@ -731,12 +731,12 @@
       <pre class="lines">
 
 
-90
-91
-92</pre>
+92
+93
+94</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 90</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 92</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_db'>db</span>
   <span class='ivar'>@db</span> <span class='op'>||=</span> <span class='const'>Extralite</span><span class='op'>::</span><span class='const'>Database</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>db/dev.sqlite</span><span class='tstring_end'>&#39;</span></span>
@@ -812,9 +812,6 @@
       <pre class="lines">
 
 
-220
-221
-222
 223
 224
 225
@@ -823,10 +820,13 @@
 228
 229
 230
-231</pre>
+231
+232
+233
+234</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 220</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 223</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_determine_winner'>determine_winner</span><span class='lparen'>(</span><span class='id identifier rubyid_players'>players</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_winning_moves'>winning_moves</span> <span class='op'>=</span> <span class='lbrace'>{</span> <span class='label'>rock:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>paper</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>paper:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>scissor</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>scissor:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>rock</span><span class='tstring_end'>&#39;</span></span> <span class='rbrace'>}</span>
@@ -888,14 +888,14 @@
       <pre class="lines">
 
 
-163
-164
-165
 166
-167</pre>
+167
+168
+169
+170</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 163</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 166</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_disable_user_1_week'>disable_user_1_week</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='kw'>unless</span> <span class='id identifier rubyid_admin?'><span class='object_link'><a href="Checks.html#admin%3F-instance_method" title="Checks#admin? (method)">admin?</a></span></span>
@@ -983,16 +983,16 @@
       <pre class="lines">
 
 
-239
-240
-241
 242
 243
 244
-245</pre>
+245
+246
+247
+248</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 239</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 242</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_end_challenge'>end_challenge</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='id identifier rubyid_move'>move</span><span class='comma'>,</span> <span class='id identifier rubyid_winner_elo_change'>winner_elo_change</span><span class='comma'>,</span> <span class='id identifier rubyid_loser_elo_change'>loser_elo_change</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query'>query</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>update challenges set challenged_move = $4, challenged_elo_change = $2, challenger_elo_change = $3, timestamp = CURRENT_TIMESTAMP where id = $1</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
@@ -1054,9 +1054,6 @@
       <pre class="lines">
 
 
-274
-275
-276
 277
 278
 279
@@ -1073,10 +1070,13 @@
 290
 291
 292
-293</pre>
+293
+294
+295
+296</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 274</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 277</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fake_challenge'>fake_challenge</span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_winner'>winner</span><span class='comma'>,</span> <span class='id identifier rubyid_loser'>loser</span> <span class='op'>=</span> <span class='id identifier rubyid_play_match'><span class='object_link'><a href="#play_match-instance_method" title="Models#play_match (method)">play_match</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='lbracket'>[</span><span class='int'>0</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_result'>result</span><span class='lbracket'>[</span><span class='int'>1</span><span class='rbracket'>]</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span><span class='rparen'>)</span>
@@ -1169,12 +1169,12 @@
       <pre class="lines">
 
 
-193
-194
-195</pre>
+196
+197
+198</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 193</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 196</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch_challenge'>fetch_challenge</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_row'>query_single_row</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select u.username, u.id as opponent_id, c.challenger_move from challenges c left join users u on c.challenger_id = u.id where c.id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
@@ -1240,14 +1240,14 @@
       <pre class="lines">
 
 
-183
-184
-185
 186
-187</pre>
+187
+188
+189
+190</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 183</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 186</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch_challenges'>fetch_challenges</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span><span class='rparen'>)</span>
   <span class='kw'>return</span> <span class='lbracket'>[</span><span class='rbracket'>]</span> <span class='kw'>unless</span> <span class='id identifier rubyid_user'>user</span> <span class='op'>&amp;&amp;</span> <span class='id identifier rubyid_user'>user</span><span class='lbracket'>[</span><span class='symbol'>:id</span><span class='rbracket'>]</span>
@@ -1317,9 +1317,6 @@
       <pre class="lines">
 
 
-201
-202
-203
 204
 205
 206
@@ -1330,10 +1327,13 @@
 211
 212
 213
-214</pre>
+214
+215
+216
+217</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 201</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 204</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch_latest_matches'>fetch_latest_matches</span><span class='lparen'>(</span><span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_query_str'>query_str</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>select rs.id, rs.timestamp, challenged_elo_change, challenger_elo_change,
@@ -1420,12 +1420,12 @@
       <pre class="lines">
 
 
-109
-110
-111</pre>
+111
+112
+113</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 109</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 111</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch_user'>fetch_user</span><span class='lparen'>(</span><span class='id identifier rubyid_uid'>uid</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_row'>query_single_row</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select * from users where id = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_uid'>uid</span><span class='rparen'>)</span>
@@ -1503,14 +1503,14 @@
       <pre class="lines">
 
 
-117
-118
 119
 120
-121</pre>
+121
+122
+123</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 117</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 119</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_fetch_users'>fetch_users</span><span class='lparen'>(</span><span class='label'>disabled:</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_str'>str</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select * from users order by elo desc</span><span class='tstring_end'>&#39;</span></span>
@@ -1578,19 +1578,19 @@
       <pre class="lines">
 
 
-299
-300
-301
 302
 303
 304
 305
 306
 307
-308</pre>
+308
+309
+310
+311</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 299</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 302</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_move_to_sv'>move_to_sv</span><span class='lparen'>(</span><span class='id identifier rubyid_move'>move</span><span class='rparen'>)</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_move'>move</span>
@@ -1709,12 +1709,12 @@
       <pre class="lines">
 
 
-101
-102
-103</pre>
+103
+104
+105</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 101</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 103</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_partial'>partial</span><span class='lparen'>(</span><span class='id identifier rubyid_name'>name</span><span class='comma'>,</span> <span class='label'>path:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/components</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='label'>locals:</span> <span class='lbrace'>{</span><span class='rbrace'>}</span><span class='rparen'>)</span>
   <span class='const'>Slim</span><span class='op'>::</span><span class='const'>Template</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_settings'>settings</span><span class='period'>.</span><span class='id identifier rubyid_views'>views</span><span class='embexpr_end'>}</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_path'>path</span><span class='embexpr_end'>}</span><span class='tstring_content'>/</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_name'>name</span><span class='embexpr_end'>}</span><span class='tstring_content'>.slim</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id identifier rubyid_render'>render</span><span class='lparen'>(</span><span class='kw'>self</span><span class='comma'>,</span> <span class='id identifier rubyid_locals'>locals</span><span class='rparen'>)</span>
@@ -1796,9 +1796,6 @@
       <pre class="lines">
 
 
-252
-253
-254
 255
 256
 257
@@ -1812,10 +1809,13 @@
 265
 266
 267
-268</pre>
+268
+269
+270
+271</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 252</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 255</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_play_match'>play_match</span><span class='lparen'>(</span><span class='id identifier rubyid_winner'>winner</span><span class='comma'>,</span> <span class='id identifier rubyid_loser'>loser</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_winner_elo'>winner_elo</span> <span class='op'>=</span> <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_value'>query_single_value</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select elo from users where id = $1</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_winner'>winner</span><span class='rparen'>)</span>
@@ -1906,8 +1906,6 @@
       <pre class="lines">
 
 
-140
-141
 142
 143
 144
@@ -1916,15 +1914,19 @@
 147
 148
 149
-150</pre>
+150
+151
+152
+153</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 140</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 142</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sign_in'>sign_in</span><span class='lparen'>(</span><span class='id identifier rubyid_username'>username</span><span class='comma'>,</span> <span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
   <span class='comment'># är lösenordet rätt?
 </span>  <span class='id identifier rubyid_db_password'>db_password</span> <span class='op'>=</span> <span class='id identifier rubyid_db'><span class='object_link'><a href="#db-instance_method" title="Models#db (method)">db</a></span></span><span class='period'>.</span><span class='id identifier rubyid_query_single_value'>query_single_value</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>select pw_hash from users where username = ?</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span> <span class='id identifier rubyid_username'>username</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_p'>p</span> <span class='const'>BCrypt</span><span class='op'>::</span><span class='const'>Password</span><span class='period'>.</span><span class='id identifier rubyid_create'>create</span><span class='lparen'>(</span><span class='id identifier rubyid_password'>password</span><span class='rparen'>)</span>
+
   <span class='id identifier rubyid_match'>match</span> <span class='op'>=</span> <span class='const'>BCrypt</span><span class='op'>::</span><span class='const'>Password</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_db_password'>db_password</span><span class='rparen'>)</span> <span class='op'>==</span> <span class='id identifier rubyid_password'>password</span>
   <span class='kw'>return</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>No match</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>unless</span> <span class='id identifier rubyid_match'>match</span>
 
@@ -1965,12 +1967,12 @@
       <pre class="lines">
 
 
-155
-156
-157</pre>
+158
+159
+160</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'models.rb', line 155</span>
+      <pre class="code"><span class="info file"># File 'models.rb', line 158</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_sign_out'>sign_out</span>
   <span class='id identifier rubyid_session'>session</span><span class='op'>&amp;.</span><span class='id identifier rubyid_destroy'>destroy</span>
@@ -1985,7 +1987,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu Apr 21 17:22:44 2022 by
+  Generated on Fri Apr 22 10:49:54 2022 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.7.0).
 </div>

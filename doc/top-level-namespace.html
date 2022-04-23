@@ -401,30 +401,6 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="top-level-namespace.html#POST__user_new-instance_method" title="#POST /user/new (instance method)">#<strong>POST /user/new</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Skapar en användare om kriterierna uppfylls - Användarnamn och lösenord är ifyllt - Användarnamnet är ledigt.</p>
-</div></span>
-  
-</li>
-
-      
-        <li class="public ">
-  <span class="summary_signature">
-    
       <a href="top-level-namespace.html#POST__user_signin-instance_method" title="#POST /user/signin (instance method)">#<strong>POST /user/signin</strong>  &#x21d2; Object </a>
     
 
@@ -441,6 +417,30 @@
   
     <span class="summary_desc"><div class='inline'>
 <p>Loggar in användaren.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="top-level-namespace.html#POST__user_signup-instance_method" title="#POST /user/signup (instance method)">#<strong>POST /user/signup</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Skapar en användare om kriterierna uppfylls - Användarnamn och lösenord är ifyllt - Användarnamnet är ledigt.</p>
 </div></span>
   
 </li>
@@ -556,13 +556,13 @@
       <pre class="lines">
 
 
-105
-106
-107
-108</pre>
+134
+135
+136
+137</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app.rb', line 105</span>
+      <pre class="code"><span class="info file"># File 'app.rb', line 134</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/api/users</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_users'>users</span> <span class='op'>=</span> <span class='id identifier rubyid_fetch_users'><span class='object_link'><a href="Models.html#fetch_users-instance_method" title="Models#fetch_users (method)">fetch_users</a></span></span>
@@ -621,15 +621,15 @@
       <pre class="lines">
 
 
-123
-124
-125
-126
-127
-128</pre>
+152
+153
+154
+155
+156
+157</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app.rb', line 123</span>
+      <pre class="code"><span class="info file"># File 'app.rb', line 152</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/challenge/:id</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_id'>id</span><span class='op'>|</span>
   <span class='ivar'>@opponent</span> <span class='op'>=</span> <span class='id identifier rubyid_fetch_user'><span class='object_link'><a href="Models.html#fetch_user-instance_method" title="Models#fetch_user (method)">fetch_user</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span>
@@ -690,15 +690,15 @@
       <pre class="lines">
 
 
-153
-154
-155
-156
-157
-158</pre>
+182
+183
+184
+185
+186
+187</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app.rb', line 153</span>
+      <pre class="code"><span class="info file"># File 'app.rb', line 182</span>
 
 <span class='id identifier rubyid_get'>get</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/challenge/:id/accept</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_id'>id</span><span class='op'>|</span>
   <span class='ivar'>@opponent</span> <span class='op'>=</span> <span class='id identifier rubyid_fetch_challenge'><span class='object_link'><a href="Models.html#fetch_challenge-instance_method" title="Models#fetch_challenge (method)">fetch_challenge</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='rparen'>)</span>
@@ -976,17 +976,17 @@
       <pre class="lines">
 
 
-134
-135
-136
-137
-138
-139
-140
-141</pre>
+163
+164
+165
+166
+167
+168
+169
+170</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'app.rb', line 163</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/challenge/:id</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_id'>id</span><span class='op'>|</span>
   <span class='id identifier rubyid_user'>user</span> <span class='op'>=</span> <span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
@@ -1065,22 +1065,22 @@
       <pre class="lines">
 
 
-164
-165
-166
-167
-168
-169
-170
-171
-172
-173
-174
-175
-176</pre>
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app.rb', line 164</span>
+      <pre class="code"><span class="info file"># File 'app.rb', line 193</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/challenge/:id/answer</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid_id'>id</span><span class='op'>|</span>
   <span class='id identifier rubyid_challenge'>challenge</span> <span class='op'>=</span> <span class='id identifier rubyid_fetch_challenge'><span class='object_link'><a href="Models.html#fetch_challenge-instance_method" title="Models#fetch_challenge (method)">fetch_challenge</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span>
@@ -1148,13 +1148,13 @@
       <pre class="lines">
 
 
-187
-188
-189
-190</pre>
+216
+217
+218
+219</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app.rb', line 187</span>
+      <pre class="code"><span class="info file"># File 'app.rb', line 216</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/challenge/:id/delete</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span> <span class='op'>|</span><span class='id identifier rubyid__id'>_id</span><span class='op'>|</span>
   <span class='comment'># delete_challenge(id.to_i)
@@ -1261,22 +1261,22 @@
       <pre class="lines">
 
 
-208
-209
-210
-211
-212
-213
-214
-215
-216
-217
-218
-219
-220</pre>
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app.rb', line 208</span>
+      <pre class="code"><span class="info file"># File 'app.rb', line 238</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/result</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
   <span class='id identifier rubyid_winner'>winner</span> <span class='op'>=</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:winner</span><span class='rbracket'>]</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span>
@@ -1289,84 +1289,6 @@
 
   <span class='id identifier rubyid_fake_challenge'><span class='object_link'><a href="Models.html#fake_challenge-instance_method" title="Models#fake_challenge (method)">fake_challenge</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_result'>result</span><span class='rparen'>)</span>
 
-  <span class='id identifier rubyid_redirect'>redirect</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/</span><span class='tstring_end'>&#39;</span></span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      <div class="method_details ">
-  <h3 class="signature " id="POST__user_new-instance_method">
-  
-    #<strong>POST /user/new</strong>  &#x21d2; <tt>Object</tt> 
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Skapar en användare om kriterierna uppfylls</p>
-<ul><li>
-<p>Användarnamn och lösenord är ifyllt</p>
-</li><li>
-<p>Användarnamnet är ledigt</p>
-</li></ul>
-
-
-  </div>
-</div>
-<div class="tags">
-  <p class="tag_title">Parameters:</p>
-<ul class="param">
-  
-    <li>
-      
-        <span class='name'>username</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-    </li>
-  
-    <li>
-      
-        <span class='name'>password</span>
-      
-      
-        <span class='type'>(<tt>String</tt>)</span>
-      
-      
-      
-    </li>
-  
-</ul>
-
-
-
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-97
-98
-99
-100
-101</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'app.rb', line 97</span>
-
-<span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/user/new</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:signup_error</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
-  <span class='id identifier rubyid_add_user'><span class='object_link'><a href="Models.html#add_user-instance_method" title="Models#add_user (method)">add_user</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:username</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:password</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_redirect'>redirect</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/</span><span class='tstring_end'>&#39;</span></span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1428,26 +1350,114 @@
       <pre class="lines">
 
 
-69
-70
-71
-72
-73
-74
-75
-76
-77</pre>
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'app.rb', line 69</span>
+      <pre class="code"><span class="info file"># File 'app.rb', line 89</span>
 
 <span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/user/signin</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
-  <span class='id identifier rubyid_error'>error</span> <span class='op'>=</span> <span class='id identifier rubyid_verify_params'><span class='object_link'><a href="Checks.html#verify_params-instance_method" title="Checks#verify_params (method)">verify_params</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='comma'>,</span> <span class='qwords_beg'>%w[</span><span class='tstring_content'>username</span><span class='words_sep'> </span><span class='tstring_content'>password</span><span class='tstring_end'>]</span></span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_redirect'>redirect</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/sign-in</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_error'>error</span>
-
   <span class='id identifier rubyid_sign_in_err'>sign_in_err</span> <span class='op'>=</span> <span class='id identifier rubyid_sign_in'><span class='object_link'><a href="Models.html#sign_in-instance_method" title="Models#sign_in (method)">sign_in</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:username</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:password</span><span class='rbracket'>]</span><span class='rparen'>)</span>
-  <span class='kw'>return</span> <span class='id identifier rubyid_redirect'>redirect</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/sign-in</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>if</span> <span class='id identifier rubyid_sign_in_err'>sign_in_err</span>
+  <span class='kw'>if</span> <span class='id identifier rubyid_sign_in_err'>sign_in_err</span>
+    <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:attempts</span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='int'>1</span>
+    <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:last_attempt</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+    <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:signin_error</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>Användare eller lösenord är fel</span><span class='tstring_end'>&#39;</span></span>
+    <span class='kw'>return</span> <span class='id identifier rubyid_redirect'>redirect</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/sign-in</span><span class='tstring_end'>&#39;</span></span>
+  <span class='kw'>end</span>
 
+  <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:attempts</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='int'>0</span>
+  <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:signin_error</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+
+  <span class='id identifier rubyid_redirect'>redirect</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/</span><span class='tstring_end'>&#39;</span></span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="POST__user_signup-instance_method">
+  
+    #<strong>POST /user/signup</strong>  &#x21d2; <tt>Object</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Skapar en användare om kriterierna uppfylls</p>
+<ul><li>
+<p>Användarnamn och lösenord är ifyllt</p>
+</li><li>
+<p>Användarnamnet är ledigt</p>
+</li></ul>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>username</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+126
+127
+128
+129
+130</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'app.rb', line 126</span>
+
+<span class='id identifier rubyid_post'>post</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/user/signup</span><span class='tstring_end'>&#39;</span></span> <span class='kw'>do</span>
+  <span class='id identifier rubyid_session'>session</span><span class='lbracket'>[</span><span class='symbol'>:signup_error</span><span class='rbracket'>]</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_end'>&#39;</span></span>
+  <span class='id identifier rubyid_add_user'><span class='object_link'><a href="Models.html#add_user-instance_method" title="Models#add_user (method)">add_user</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:username</span><span class='rbracket'>]</span><span class='comma'>,</span> <span class='id identifier rubyid_params'>params</span><span class='lbracket'>[</span><span class='symbol'>:password</span><span class='rbracket'>]</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_redirect'>redirect</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>/</span><span class='tstring_end'>&#39;</span></span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1460,7 +1470,7 @@
 </div>
 
       <div id="footer">
-  Generated on Thu Apr 21 17:22:44 2022 by
+  Generated on Fri Apr 22 10:49:54 2022 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.27 (ruby-2.7.0).
 </div>
