@@ -11,8 +11,8 @@ html lang="en"
             a href="/" class="flex-grow"
                 h1 Sten-Sax-Påse
             nav
-            - if auth?
-                a href="/user/#{session[:user][:id]}" = "Hej #{session[:user][:username]}"
+            - if current_user
+                a href="/user/#{session[:user_id]}" = "Hej #{current_user.username}"
             - else
                 a href="/sign-in" Logga in
         == yield

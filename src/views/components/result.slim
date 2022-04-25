@@ -1,7 +1,10 @@
 li class="flex items-center gap-4 flex-1"
     - if admin?
-        form action="/challenge/#{result[:id]}/delete" method="post" 
-            button type="submit" radera
+        div class="flex-grow-0 justify-center items-center"
+            form action="/challenge/#{result[:id]}/delete" method="post" class="mb-0" 
+                button type="submit" class="flex items-center m-0" style="margin: 0;"
+                    i data-feather="trash"
+                
     div
         p = result[:timestamp]
     div class="flex gap-4 items-center"

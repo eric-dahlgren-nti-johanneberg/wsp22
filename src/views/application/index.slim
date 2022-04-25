@@ -2,7 +2,7 @@ section class="xl:grid grid-cols-[1fr_calc(192px_*_4)_1fr] flex flex-wrap max-w-
   == partial "leaderboard"
   == partial "register-result"
   main class="max-w-screen-md flex flex-col row-span-1 col-start-2 col-end-2 gap-4"
-    - if auth?
+    - if current_user
       section
         h2 class="text-xl" Mina utmaningar
         ul
