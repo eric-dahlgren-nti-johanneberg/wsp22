@@ -1,5 +1,5 @@
 main class="max-w-screen-md m-auto"
-    - if current_user.admin && can_modify(@user)
+    - if current_user && current_user.admin && current_user.id != @user.id
         p Du är en admin och kan redigera denna användare
         section class="space-x-2"
             - if @user.disabled
@@ -11,7 +11,7 @@ main class="max-w-screen-md m-auto"
     section class="flex gap-4 my-4"
         div class="w-40 flex flex-col justify-center"
             img src="https://avatars.dicebear.com/api/pixel-art/#{@user.id}.svg" class="h-40 w-40 rounded-full"
-            - if @user.admin == 1
+            - if @user.admin
                 div class="flex flex-row items-center justify-center gap-2 my-2 group relative"
                     p class="font-bold text-center" = @user.username 
                     i data-feather="shield"

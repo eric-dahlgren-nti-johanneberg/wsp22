@@ -1,4 +1,9 @@
 aside class="col-start-3 col-end-3 row-end-1 flex-1 p-2 bg-white rounded-md shadow-md"
     - leaderboard = User.leaderboard
     h2 class="text-xl" Ranking
-    section id="leaderboard" class="flex flex-col gap-2"
+    section id="leaderboard" class="flex flex-col justify-center gap-2 "
+        - leaderboard.each_with_index do |user, place|
+            a href="/user/#{user.id}" class="flex flex-row gap-2 p-1"
+                code = place + 1
+                p #{user.username}
+                p #{user.elo} ELO

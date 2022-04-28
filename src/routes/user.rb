@@ -39,7 +39,7 @@ end
 # @param [String] password
 post '/user/signin' do
   user = User.find_by_username(params[:username])
-  if user&.verify_password(params[:password])
+  if user&.password_matches(params[:password])
     session[:user_id] = user.id
     session[:attempts] = 0
     session[:signin_error] = ''
@@ -61,7 +61,7 @@ end
 # @param [String] password
 post '/user/signup' do
   session[:signup_error] = ''
-  user_id = User.skapa(params[:name], params[:password])
+  user_id = User.skapa(params[:username], params[:password])
   session[:user_id] = user_id unless user_id.nil?
   redirect '/'
 end
@@ -69,7 +69,7 @@ end
 # Check om användaren är admin
 #
 before '/user/:id/disable' do
-  redirect '/' unless admin?
+  redirect '/' unless current_user&.admin
 end
 
 # Stänger av en användare
@@ -77,7 +77,7 @@ end
 # @param [Integer] id
 # @see Models#disable_user
 post '/user/:id/disable' do |id|
-  disable_user(id.to_i)
+  User.disable(id.to_i)
   redirect('/')
 end
 
@@ -86,15 +86,8 @@ end
 # @param [Integer] id
 # @see Models#delete_user
 post '/user/:id/delete' do |id|
-  delete_user(id.to_i)
+  User.delete(id.to_i)
   return redirect '/user/signout' if id.to_i == session[:user][:id]
 
   redirect '/'
-end
-
-# Returnerar alla användare som json
-#
-get '/api/users' do
-  users = fetch_users
-  users.to_json
 end

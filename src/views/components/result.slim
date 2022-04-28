@@ -1,13 +1,13 @@
 li class="flex items-center gap-4 flex-1"
-    - if admin?
+    - if current_user && current_user.admin
         div class="flex-grow-0 justify-center items-center"
-            form action="/challenge/#{result[:id]}/delete" method="post" class="mb-0" 
+            form action="/challenge/#{result.id}/delete" method="post" class="mb-0" 
                 button type="submit" class="flex items-center m-0" style="margin: 0;"
                     i data-feather="trash"
                 
     div
-        p = result[:timestamp]
+        p = result.timestamp
     div class="flex gap-4 items-center"
-        == partial "user", locals: { user: { id: result[:challenger_id], username: result[:challenger_username], elo_change: result[:challenger_elo_change], move: result[:challenger_move] } } 
+        == partial "user", locals: { result: result.players[0], elo_change: result.elo_change }
         p vs
-        == partial "user", locals: { user: { id: result[:challenged_id], username: result[:challenged_username], elo_change: result[:challenged_elo_change], move: result[:challenged_move] } } 
+        == partial "user", locals: { result: result.players[1], elo_change: result.elo_change } 

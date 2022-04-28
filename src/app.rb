@@ -20,7 +20,8 @@ enable :sessions
 # Visar framsidan
 #
 get '/' do
-  results = Resultat.senaste
+  results = Resultat.senaste(finished: false)
+  challenges = current_user ? Resultat.senaste(to: current_user.id, finished: false) : []
 
-  slim :"application/index", locals: { results: results, challenges: [] }
+  slim :"application/index", locals: { results: results, challenges: challenges }
 end

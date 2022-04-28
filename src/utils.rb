@@ -3,9 +3,9 @@
 module Utils
   # Hämtar nuvarande användare
   # @return [User]
-  # @return [nil] om ingen användare
+  # @return [false] om ingen användare
   def current_user
-    User.find_by_id(session[:user_id])
+    User.find_by_id(session[:user_id]) || false
   end
 
   # @param [String] component
@@ -44,5 +44,20 @@ module Utils
     match.add_player(rating: player2)
 
     match.updated_ratings[0] - player1
+  end
+
+  # Omvandlar ett drag till svenska
+  #
+  # @param ['rock', 'paper', 'scissors'] move
+  # @return ['Sten', 'Papper', 'Påse']
+  def move_to_sv(move)
+    case move
+    when 'rock'
+      'Sten'
+    when 'scissors'
+      'Sax'
+    when 'paper'
+      'Påse'
+    end
   end
 end

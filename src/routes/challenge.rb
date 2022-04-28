@@ -4,7 +4,7 @@
 #
 # @param [Integer] id den utmanades id
 get '/challenge/:id' do |id|
-  @opponent = fetch_user(id.to_i)
+  @opponent = User.find_by_id(id.to_i)
   @action = "/challenge/#{id}"
 
   slim :"matches/challenge"
@@ -18,7 +18,7 @@ post '/challenge/:id' do |id|
   user = id.to_i
   move = params[:move]
 
-  create_challenge(session[:user][:id], user, move)
+  Challenge.skapa(current_user.id, user, move)
 
   redirect '/'
 end
@@ -27,7 +27,7 @@ end
 #
 # @param [Integer] id utmaningens id
 get '/challenge/:id/accept' do |id|
-  @opponent = fetch_challenge(id)
+  @opponent = Challenge.find_by_id(id).find { |c| c.user.id != session[:user_id] }
   @action = "/challenge/#{id}/answer"
 
   slim :"matches/challenge"
@@ -38,15 +38,15 @@ end
 # @param [Integer] id utmaningens id
 # @param [String] move spelarens drag
 post '/challenge/:id/answer' do |id|
-  challenge = fetch_challenge(id.to_i)
+  challenge = Challenge.find_by_id(id.to_i)
+  result = Result.find_by_id(challenge.result_id)
   move = params[:move]
 
-  result = [{ id: challenge[:opponent_id], move: challenge[:challenger_move] }, { id: session[:user][:id], move: move }]
+  players = [{ id: challenge[:opponent_id], move: challenge[:challenger_move] }, { id: current_user.id, move: move }]
+  winner, _loser = determine_winner(players)
 
-  winner, loser = determine_winner(result)
-
-  w, l = play_match(winner[:id], loser[:id])
-  end_challenge(id.to_i, move, w, l)
+  result.status = 1 # klar
+  result.winner = winner[:id]
 
   redirect "/user/#{session[:user][:id]}"
 end
