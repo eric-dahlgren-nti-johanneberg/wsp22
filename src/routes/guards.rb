@@ -50,10 +50,11 @@ end
 # Check om användaren kan skapa ett resultat
 before '/result' do
   return redirect '/' unless current_user
-  return redirect '/' unless current_user[:admin]
+  return redirect '/' unless current_user.admin
 
   verified_error = verify_params(params, %w[winner loser challenger_move challenged_move]).nil?
-  unless verified_error.nil?
+  p verified_error
+  unless verified_error
     session[:result_error] = 'Alla fält måste fyllas i'
     return redirect '/'
   end

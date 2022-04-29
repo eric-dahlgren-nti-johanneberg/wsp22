@@ -27,8 +27,15 @@ end
 #
 # @param [Integer] id utmaningens id
 get '/challenge/:id/accept' do |id|
-  @opponent = Challenge.find_by_id(id).find { |c| c.user.id != session[:user_id] }
+  challenge = Challenge.find_by_id(id.to_i)
+  result = challenge.result
+
+  challenge = Challenge.find_by_result_id_and_user(result.id, session[:user_id])
+
+  @opponent = result.players.find { |u| u.hash[:user_id] != session[:user_id] }.user
   @action = "/challenge/#{id}/answer"
+
+  p challenge
 
   slim :"matches/challenge"
 end
@@ -39,23 +46,30 @@ end
 # @param [String] move spelarens drag
 post '/challenge/:id/answer' do |id|
   challenge = Challenge.find_by_id(id.to_i)
-  result = Result.find_by_id(challenge.result_id)
+  result = challenge.result
   move = params[:move]
 
-  players = [{ id: challenge[:opponent_id], move: challenge[:challenger_move] }, { id: current_user.id, move: move }]
+  challenge.update_move(move, session[:user_id])
+
+  me = { move: move, id: session[:user_id] }
+  opponent = result.players.find { |u| u.id != session[:user_id] }
+  return redirect "/user/#{session[:user_id]}" if move == opponent.move
+
+  players = [me, { id: opponent.hash[:id], move: opponent.move }]
   winner, _loser = determine_winner(players)
 
-  result.status = 1 # klar
   result.winner = winner[:id]
 
-  redirect "/user/#{session[:user][:id]}"
+  result.status = 1
+  redirect "/user/#{session[:user_id]}"
 end
 
 # Raderar en utmaning
 #
 # @param [Integer] id utmaningens id
-post '/challenge/:id/delete' do |_id|
-  # delete_challenge(id.to_i)
+post '/challenge/:id/delete' do |id|
+  result = Resultat.find_by_id(id.to_i)
+  result.delete!
   redirect '/'
 end
 
@@ -71,10 +85,19 @@ post '/result' do
 
   session[:result_error] = ''
 
-  players = [{ id: winner, move: params[:challenger_move] }, { id: loser, move: params[:challenged_move] }]
-  result = determine_winner(players)
+  challenge_id, resultat_id = Challenge.skapa(winner, loser, params[:challenger_move])
+  p "ch re #{challenge_id} #{resultat_id}"
 
-  fake_challenge(result)
+  players = [{ id: winner, move: params[:challenger_move] }, { id: loser, move: params[:challenged_move] }]
+  winner, _loser = determine_winner(players)
+
+  challenge = Challenge.find_by_id(challenge_id)
+  resultat = Resultat.find_by_id(resultat_id)
+
+  challenge.update_move(params[:challenged_move], loser)
+  resultat.winner = winner[:id]
+
+  resultat.status = 1
 
   redirect '/'
 end

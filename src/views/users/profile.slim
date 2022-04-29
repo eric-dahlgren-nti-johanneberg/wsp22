@@ -2,12 +2,15 @@ main class="max-w-screen-md m-auto"
     - if current_user && current_user.admin && current_user.id != @user.id
         p Du är en admin och kan redigera denna användare
         section class="space-x-2"
-            - if @user.disabled
+            - unless @user.disabled?
                 form action="/user/#{@user.id}/disable" method="post" 
                     button type="submit" class="px-4 py-2 border-2 bg-red-600 border-red-600 text-white font-bold shadow-sm rounded-md" Stäng av för evigt
             - else
-                form action="/user/#{@user.id}/enable" method="post" 
-                    button type="submit" class="px-4 py-2 border-2 border-red-600 text-black font-bold shadow-sm rounded-md" Återställ användare
+                section class="flex flex-row flex-nowrap gap-4"
+                    form action="/user/#{@user.id}/enable" method="post"
+                        button type="submit" class="px-4 py-2 border-2 border-red-600 text-black font-bold shadow-sm rounded-md" Återställ användare
+                    form action="/user/#{@user.id}/delete" method="post" 
+                        button type="submit" class="px-4 py-2 border-2 border-red-600 bg-red-600 text-black font-bold shadow-sm rounded-md" RADERA ANVÄNDAREN!
     section class="flex gap-4 my-4"
         div class="w-40 flex flex-col justify-center"
             img src="https://avatars.dicebear.com/api/pixel-art/#{@user.id}.svg" class="h-40 w-40 rounded-full"
@@ -18,7 +21,7 @@ main class="max-w-screen-md m-auto"
                     div class="bg-red group-hover:opacity-100 absolute top-[-40px] rounded-md opacity-0 bg-gray-200 transition-all p-1"
                         p Admin
             - else
-                p class="font-bold text-center" #{@user.username} #{@user.disabled.positive? ? "(BANNED)" : nil}
+                p class="font-bold text-center" #{@user.username} #{@user.disabled? ? "(BANNED)" : nil}
             p class="font-semibold text-center" #{@user.elo} ELO
             section class="flex justify-center"
                 - if current_user && current_user.id != @user.id

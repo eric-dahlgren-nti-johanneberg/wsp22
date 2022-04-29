@@ -20,8 +20,12 @@ enable :sessions
 # Visar framsidan
 #
 get '/' do
-  results = Resultat.senaste(finished: false)
-  challenges = current_user ? Resultat.senaste(to: current_user.id, finished: false) : []
+  results = Resultat.senaste(finished: true)
+  challenges = current_user ? Resultat.senaste(current_user.id, to: true, from: false, finished: false) : []
 
   slim :"application/index", locals: { results: results, challenges: challenges }
+end
+
+get '/api/users' do
+  User.all.to_json
 end

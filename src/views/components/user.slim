@@ -1,2 +1,6 @@
-a href="/user/#{result.user.id}" class="p-2 shadow-sm rounded-sm border border-gray-50 hover:bg-gray-100"
-    p = "#{result.user.username} (#{move_to_sv(result.move)}, #{elo_change > 0 ? '+' : ''}#{elo_change} ELO)"
+- unless result.user.nil?
+    a href="/user/#{result.user.id}" class="p-2 shadow-sm rounded-sm border border-gray-50 hover:bg-gray-100"
+        p = "#{result.user.username} (#{move_to_sv(result.move)}#{elo_change != 0 ? ", #{result.win ? '+' : '-'}#{elo_change} ELO" : ""})"
+- else
+    div class="p-2 shadow-sm rounded-sm border border-gray-50 hover:bg-gray-100"
+        p = "RADERAD ANVÄNDARE (#{move_to_sv(result.move)}#{elo_change != 0 ? ", #{result.win ? '+' : '-'}#{elo_change} ELO" : ""})"

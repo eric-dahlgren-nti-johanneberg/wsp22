@@ -31,7 +31,7 @@ class Entitet
 
   def initialize(data)
     @hash = data
-    @id = data['id']
+    @id = data[:id]
   end
 
   def ==(other)
@@ -45,7 +45,7 @@ class Entitet
   # @param [Integer] id
   # @return [Hash<String, String>]
   def self.find_by_id(id)
-    data = db.query("SELECT * FROM #{table_name} WHERE id = ?", id).first
+    data = db.query("SELECT * FROM #{table_name} WHERE id = $1", id).first
     data && new(data)
   end
 end
@@ -77,7 +77,13 @@ class User < Entitet
     @admin = data[:admin].positive?
     @elo = data[:elo]
     @pw_hash = BCrypt::Password.new(data[:pw_hash])
-    @disabled = data[:disabled]
+    @disabled = data[:disabled].positive?
+  end
+
+  # alias för @disabled
+  # return [Boolean]
+  def disabled?
+    @disabled
   end
 
   # Skapar en användare
@@ -119,14 +125,40 @@ class User < Entitet
   #
   # @return [Array<User>]
   def self.leaderboard
-    db.query("select * from #{table_name} order by elo desc limit 10").map do |data|
+    db.query("select * from #{table_name} where disabled = 0 order by elo desc limit 10").map do |data|
       new(data)
     end
+  end
+
+  def self.all
+    db.query('select * from users where disabled = 0')
   end
 
   # @param [Boolean] value is admin?
   def admin=(value)
     db.query("update #{table_name} set admin = ?", value ? 1 : 0)
+  end
+
+  # Stänger av användaren
+  def disable!
+    db.query("update #{table_name} set disabled = 1 where id = ?", @id)
+  end
+
+  # Tar bort avstängning för användaren
+  def undisable!
+    db.query("update #{table_name} set disabled = 0 where id = ?", @id)
+  end
+
+  # raderar användaren
+  def delete!
+    db.query("delete from #{table_name} where id = ?", @id)
+  end
+
+  # ändrar elo-värdet
+  # @param [Integer] elo_change
+  def update_elo(elo_change)
+    new_elo = @elo + elo_change
+    db.query('update users set elo = ? where id = ?', new_elo, @id)
   end
 end
 
@@ -144,7 +176,8 @@ class Resultat < Entitet
       `id`				    INTEGER PRIMARY KEY,
       `status`		  	INTEGER DEFAULT 0,
       `elo_change`		INTEGER NOT NULL DEFAULT 0,
-      `timestamp`			TEXT DEFAULT CURRENT_TIMESTAMP
+      `timestamp`			TEXT DEFAULT CURRENT_TIMESTAMP,
+      `challenger_id` INTEGER
     )")
   end
 
@@ -153,55 +186,78 @@ class Resultat < Entitet
     @status = data[:status]
     @elo_change = data[:elo_change]
     @timestamp = (data[:timestamp])
-    @players = Challenge.find_by_result_id(data[:id], active: false)
+    @players = Challenge.find_by_result_id(data[:id])
   end
 
   # Skapar ett resultat, effektivt en match
+  # @param [Integer] challenger_id
   # @param [Integer] elo_diff
   # @return [Integer] row_id
-  def self.skapa(elo_diff)
+  def self.skapa(elo_diff, challenger_id)
     transaction = db
-    transaction.query("INSERT INTO #{table_name} (elo_change) values(?)", elo_diff)
+    transaction.query("INSERT INTO #{table_name} (elo_change, challenger_id) values(?, ?)", elo_diff, challenger_id)
     transaction.last_insert_rowid
   end
 
   # Hämtar senaste resultaten
   # @param [nil, String] user
   # @param [Boolean] :finished
-  # @param [Integer] :to from user id
-  # @param [Integer] :from to user id
-  def self.senaste(user = nil, finished: true, to: nil, from: nil)
-    query = "select re.* from #{table_name} re "
-    recipient = 'and ch.user_id = $2' if to || from
-    recipient = 'and ch.user_id = $3' if user
-    db.query("#{query} left join #{Challenge.table_name} ch on re.id = ch.result_id where status = $1 #{recipient} order by timestamp limit 5",
-             finished ? 1 : 0, to || from, user).map do |res|
-      new(res)
+  # @param [Boolean] :to from user
+  # @param [Boolean] :from to user
+  def self.senaste(user = nil, finished: true, to: true, from: true)
+    base_query = 'select distinct r.* from challenges left join results r on result_id = r.id'
+
+    unless to && from
+      send_or_recieve = 'and user_id <> challenger_id' if to
+      send_or_recieve = 'and user_id == challenger_id' if from
+    end
+
+    conditions = "where status = #{finished ? 1 : 0} #{send_or_recieve} #{user.nil? ? '' : 'and user_id = ?'}"
+
+    query = "#{base_query} #{conditions} order by timestamp desc limit 10"
+    db.query(query, user).map do |res|
+      Resultat.find_by_id(res[:id])
     end
   end
 
   # @param [Integer] value 0 eller 1, väntar eller klar.
   def status=(value)
-    db.query("update #{table_name} set status = ? where id = ?", value, @id)
+    if value == 1
+      @players.each do |player|
+        player.user.update_elo(player.win ? @elo_change : -@elo_change)
+      end
+
+    end
+
+    db.query("update #{table_name} set status = ? where id = ?", value, @hash[:id])
   end
 
   # @param [Integer] user_id
   def winner=(user_id)
-    db.query("update #{Challenge.table_name} set win = 1 where result_id = ? and user_id = ?", @id, user_id)
+    db.query("update #{Challenge.table_name} set win = 1 where result_id = ? and user_id = ?", @hash[:id], user_id)
+    @players = Challenge.find_by_result_id(@id)
   end
 
+  # @return [User]
   def winner
     @players.find { |player| player.win == 1 }
   end
 
+  # @return [User]
   def loser
     @players.find { |player| player.win.zero? }
+  end
+
+  # Raderar ett resultat
+  def delete!
+    db.query("delete from #{Challenge.table_name} where result_id = ?", @id)
+    db.query("delete from #{table_name} where id = ?", @id)
   end
 end
 
 # Entiteten Challenge
 class Challenge < Entitet
-  attr_reader :user, :move, :active, :opponent
+  attr_reader :user, :move, :active, :win
 
   def self.table_name
     'challenges'
@@ -214,7 +270,7 @@ class Challenge < Entitet
       `result_id`         INTEGER,
       `move`              TEXT,
       `win`               INTEGER,
-      FOREIGN KEY(`user_id`) REFERENCES `#{User.table_name}`(`id`),
+      FOREIGN KEY(`user_id`) REFERENCES `#{User.table_name}`(`id`) ON DELETE SET NULL,
       FOREIGN KEY(`result_id`) REFERENCES `#{Resultat.table_name}`(`id`)
       )")
   end
@@ -222,24 +278,41 @@ class Challenge < Entitet
   def initialize(data)
     super(data)
 
+    @id = data[:id]
     @user = User.find_by_id(data[:user_id])
     @move = data[:move]
     @active = data[:move].nil?
-    @win = data[:win].nil? ? false : data[:win] == 1
+    @win = data[:win] == 1
+  end
+
+  # @param [Integer] result_id
+  # @param [Integer] user_id
+  # @return [User]
+  def self.get_opponent(result_id, user_id)
+    opponent_id = db.query("select user_id from #{Challenge.table_name} where result_id = ? and user_id <> ?", result_id, user_id)
+    User.find_by_id(opponent_id)
   end
 
   # @param [Integer] challenger_id from user
   # @param [Integer] opponent_id to user
   # @param [String] move
+  # @return [Integer] resultatets id
   def self.skapa(challenger_id, opponent_id, move)
     challenger_elo = User.find_by_id(challenger_id).elo
     opponent_elo = User.find_by_id(opponent_id).elo
 
     diff = Utils.calculate_elo_change(challenger_elo, opponent_elo)
 
-    resultat_id = Resultat.skapa(diff)
+    resultat_id = Resultat.skapa(diff, challenger_id)
     add_user(resultat_id, challenger_id, move)
-    add_user(resultat_id, opponent_id, nil)
+    challenge_id = add_user(resultat_id, opponent_id, nil)
+
+    [challenge_id, resultat_id]
+  end
+
+  def result
+    data = db.query_single_row("select * from #{Resultat.table_name} where id = ?", @hash[:result_id])
+    data && Resultat.new(data)
   end
 
   # @param [Integer] result_id
@@ -248,7 +321,6 @@ class Challenge < Entitet
     query = "SELECT * FROM #{table_name} WHERE result_id = ?"
     query += 'AND MOVE IS NOT NULL' if active
     db.query(query, result_id).map do |data|
-      p data
       new(data)
     end
   end
@@ -264,7 +336,7 @@ class Challenge < Entitet
   # @param [Integer] resultat_id
   # @param [Integer] player_id
   # @param [String] move
-  # @return [Integer] users id
+  # @return [Integer] challenge id
   def self.add_user(resultat_id, player_id, move)
     sess = db
     sess.query('insert into challenges (result_id, user_id, move) values(?, ?, ?)', resultat_id, player_id, move)
@@ -277,6 +349,17 @@ class Challenge < Entitet
   def self.can_access?(result_id, user_id)
     count = db.query_single_value("select COUNT(id) from #{table_name} where result_id = ? and user_id = ?", result_id, user_id)
     count.positive?
+  end
+
+  # @param [String] values
+  def update_move(value, user_id)
+    @move = value
+    db.query('update challenges set move = ? where user_id = ? and result_id = ?', value, user_id, @hash[:result_id])
+  end
+
+  def self.find_by_result_id_and_user(result_id, user_id)
+    data = db.query_single_row('select * from challenges where result_id = ? and user_id = ?', result_id, user_id)
+    data && new(data)
   end
 end
 
@@ -291,3 +374,5 @@ User.skapa('admin', 'password')
 
 # från eric till johnny
 Challenge.skapa(eric, johnny, 'rock')
+# tvärtom
+Challenge.skapa(johnny, eric, 'rock')

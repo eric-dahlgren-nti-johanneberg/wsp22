@@ -19,7 +19,7 @@ module Utils
   #
   # @param [Array<Hash>] players Spelarna och deras drag
   # @return [Array<Hash>] Samma array, men vinnaren är på index 0
-  def self.determine_winner(players)
+  def determine_winner(players)
     winning_moves = { rock: 'paper', paper: 'scissor', scissor: 'rock' }
 
     if winning_moves[:"#{players[0][:move]}"] == players[1][:move]
@@ -59,5 +59,16 @@ module Utils
     when 'paper'
       'Påse'
     end
+  end
+
+  # Verifierar att alla nycklar i ett objekt har värden
+  #
+  # @param [Hash<String, String>] params
+  # @param [Array<String>] keys
+  def verify_params(params, keys)
+    keys.each do |key|
+      return { key: key, message: "#{key} is invalid" } if params[key] == ''
+    end
+    nil
   end
 end

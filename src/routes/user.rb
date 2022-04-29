@@ -28,7 +28,7 @@ end
 # @param [Integer] uid användarens id
 get '/user/:uid' do |uid|
   @user = User.find_by_id(uid.to_i)
-  @user_matches = Resultat.senaste(uid.to_i)
+  @user_matches = Resultat.senaste(uid.to_i, finished: true)
 
   slim :'users/profile'
 end
@@ -40,10 +40,15 @@ end
 post '/user/signin' do
   user = User.find_by_username(params[:username])
   if user&.password_matches(params[:password])
-    session[:user_id] = user.id
-    session[:attempts] = 0
-    session[:signin_error] = ''
-    redirect '/'
+    if user.disabled?
+      session[:signin_error] = 'Ditt konto är avstängt'
+      redirect '/sign-in'
+    else
+      session[:user_id] = user.id
+      session[:attempts] = 0
+      session[:signin_error] = ''
+      redirect '/'
+    end
   else
     session[:attempts] += 1
     session[:last_attempt] = Time.new
@@ -77,7 +82,18 @@ end
 # @param [Integer] id
 # @see Models#disable_user
 post '/user/:id/disable' do |id|
-  User.disable(id.to_i)
+  user = User.find_by_id(id.to_i)
+  user.disable!
+  redirect('/')
+end
+
+# Återställer en användare
+#
+# @param [Integer] id
+# @see Models#disable_user
+post '/user/:id/enable' do |id|
+  user = User.find_by_id(id.to_i)
+  user.undisable!
   redirect('/')
 end
 
@@ -86,8 +102,9 @@ end
 # @param [Integer] id
 # @see Models#delete_user
 post '/user/:id/delete' do |id|
-  User.delete(id.to_i)
-  return redirect '/user/signout' if id.to_i == session[:user][:id]
+  user = User.find_by_id(id.to_i)
+  user.delete!
+  return redirect '/user/signout' if id.to_i == session[:user_id]
 
   redirect '/'
 end

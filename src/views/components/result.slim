@@ -7,7 +7,13 @@ li class="flex items-center gap-4 flex-1"
                 
     div
         p = result.timestamp
-    div class="flex gap-4 items-center"
-        == partial "user", locals: { result: result.players[0], elo_change: result.elo_change }
-        p vs
-        == partial "user", locals: { result: result.players[1], elo_change: result.elo_change } 
+    - if result.players[0].win || result.players[1].win
+        div class="flex gap-4 items-center"
+            == partial "user", locals: { result: result.players[0], elo_change: result.elo_change }
+            p vs
+            == partial "user", locals: { result: result.players[1], elo_change: result.elo_change } 
+    - else
+        div class="flex gap-4 items-center"
+            == partial "user", locals: { result: result.players[0], elo_change: 0 }
+            p vs
+            == partial "user", locals: { result: result.players[1], elo_change: 0 } 
