@@ -186,7 +186,7 @@ class Resultat < Entitet
     @status = data[:status]
     @elo_change = data[:elo_change]
     @timestamp = (data[:timestamp])
-    @players = Challenge.find_by_result_id(data[:id])
+    @players = Challenge.find_by_result_id(data[:id], active: false)
   end
 
   # Skapar ett resultat, effektivt en match
@@ -205,7 +205,7 @@ class Resultat < Entitet
   # @param [Boolean] :to from user
   # @param [Boolean] :from to user
   def self.senaste(user = nil, finished: true, to: true, from: true)
-    base_query = 'select distinct r.* from challenges left join results r on result_id = r.id'
+    base_query = 'select distinct c.result_id from challenges c left join results r on result_id = r.id'
 
     unless to && from
       send_or_recieve = 'and user_id <> challenger_id' if to
@@ -215,9 +215,13 @@ class Resultat < Entitet
     conditions = "where status = #{finished ? 1 : 0} #{send_or_recieve} #{user.nil? ? '' : 'and user_id = ?'}"
 
     query = "#{base_query} #{conditions} order by timestamp desc limit 10"
-    db.query(query, user).map do |res|
-      Resultat.find_by_id(res[:id])
-    end
+    challenges = db.query(query, user)
+
+    counts = Hash.new(0)
+    challenges.each { |v| counts[v[:result_id]] += 1 }
+    p counts.select { |_v, count| count == 1 }.keys
+
+    counts.select { |_v, count| count == 1 }.keys.map { |v| Resultat.find_by_id(v) }
   end
 
   # @param [Integer] value 0 eller 1, väntar eller klar.
@@ -343,12 +347,16 @@ class Challenge < Entitet
     sess.last_insert_rowid
   end
 
-  # @param [Integer] result_id
+  # @param [Integer] challenge_id
   # @param [Integer] user_id
   # @return [Boolean]
-  def self.can_access?(result_id, user_id)
-    count = db.query_single_value("select COUNT(id) from #{table_name} where result_id = ? and user_id = ?", result_id, user_id)
-    count.positive?
+  def self.can_access?(challenge_id, user_id)
+    data = db.query_single_row("select r.* from #{table_name} c left join #{Resultat.table_name} r on r.id = c.result_id where c.id = ?", challenge_id)
+    return false if data.nil?
+    
+
+    res = Resultat.new(data)
+    !res.players.find { |u| u.user.id == user_id }.nil?
   end
 
   # @param [String] values
@@ -361,6 +369,13 @@ class Challenge < Entitet
     data = db.query_single_row('select * from challenges where result_id = ? and user_id = ?', result_id, user_id)
     data && new(data)
   end
+
+  def self.my_challenges(user_id)
+    db.query('select c.result_id from challenges c left join results r on r.id = c.result_id where c.user_id = $1 and r.challenger_id <> $1 and r.status = 0', user_id).map do |ch|
+      data = db.query_single_row('select * from challenges where result_id = ? and user_id <> ?', ch[:result_id], user_id)
+      data && new(data)
+    end
+  end
 end
 
 User.create_table
@@ -370,9 +385,11 @@ Challenge.create_table
 eric = User.skapa('eric', 'test')
 User.find_by_id(eric).admin = true
 johnny = User.skapa('johnny', 'test')
-User.skapa('admin', 'password')
+admin = User.skapa('admin', 'password')
 
 # från eric till johnny
 Challenge.skapa(eric, johnny, 'rock')
 # tvärtom
 Challenge.skapa(johnny, eric, 'rock')
+# admin -> eric
+Challenge.skapa(admin, eric, 'rock')

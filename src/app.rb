@@ -21,7 +21,9 @@ enable :sessions
 #
 get '/' do
   results = Resultat.senaste(finished: true)
-  challenges = current_user ? Resultat.senaste(current_user.id, to: true, from: false, finished: false) : []
+  challenges = current_user ? Challenge.my_challenges(current_user.id).reject(&:nil?) : []
+
+  p challenges
 
   slim :"application/index", locals: { results: results, challenges: challenges }
 end

@@ -37,7 +37,7 @@ end
 #
 # @param [Integer] tävlingens användarens id
 before '/challenge/:id/*' do
-  redirect '/' unless Challenge.can_access?(params[:id], session[:user_id])
+  redirect '/' unless Challenge.can_access?(params[:id].to_i, session[:user_id])
 end
 
 # Check om användaren är admin

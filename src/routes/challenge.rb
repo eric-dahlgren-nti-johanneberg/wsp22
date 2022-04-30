@@ -30,12 +30,10 @@ get '/challenge/:id/accept' do |id|
   challenge = Challenge.find_by_id(id.to_i)
   result = challenge.result
 
-  challenge = Challenge.find_by_result_id_and_user(result.id, session[:user_id])
+  p challenge
 
   @opponent = result.players.find { |u| u.hash[:user_id] != session[:user_id] }.user
   @action = "/challenge/#{id}/answer"
-
-  p challenge
 
   slim :"matches/challenge"
 end
@@ -47,7 +45,14 @@ end
 post '/challenge/:id/answer' do |id|
   challenge = Challenge.find_by_id(id.to_i)
   result = challenge.result
+  p challenge.user.username
+
+  challenge = Challenge.find_by_result_id_and_user(result.id, session[:user_id])
+  result = challenge.result
+
   move = params[:move]
+
+  p challenge.user.username
 
   challenge.update_move(move, session[:user_id])
 
@@ -86,7 +91,6 @@ post '/result' do
   session[:result_error] = ''
 
   challenge_id, resultat_id = Challenge.skapa(winner, loser, params[:challenger_move])
-  p "ch re #{challenge_id} #{resultat_id}"
 
   players = [{ id: winner, move: params[:challenger_move] }, { id: loser, move: params[:challenged_move] }]
   winner, _loser = determine_winner(players)

@@ -65,10 +65,12 @@ end
 # @param [String] username
 # @param [String] password
 post '/user/signup' do
-  session[:signup_error] = ''
   user_id = User.skapa(params[:username], params[:password])
   session[:user_id] = user_id unless user_id.nil?
-  redirect '/'
+  if user_id.nil?
+    session[:signup_error] = 'Användaren existerar redan'
+    redirect '/sign-in'
+  end
 end
 
 # Check om användaren är admin

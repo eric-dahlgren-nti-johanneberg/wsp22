@@ -8,11 +8,13 @@ section class="xl:grid grid-cols-[1fr_calc(192px_*_4)_1fr] flex flex-wrap max-w-
         ul
           - challenges.each do |ch|
             div class="p-2 shadow-md rounded-md"
-              p #{ch.players.find { |u| u.hash[:user_id] != session[:user_id] }.user.username} utmanar dig!
+              p #{ch.user.username} utmanar dig!
               a class="text-teal-500 font-semibold" href="/challenge/#{ch.hash[:id]}/accept" Acceptera
 
     section class="flex-1"
       h2 class="text-xl" Senaste matcher
       ul class="w-full space-y-2 my-2"
+        - if results.empty?
+          p Ingen har spelat några matcher
         - results.each do |result|
           == partial "result", locals: { result: result }

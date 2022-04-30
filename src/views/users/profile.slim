@@ -13,7 +13,7 @@ main class="max-w-screen-md m-auto"
                         button type="submit" class="px-4 py-2 border-2 border-red-600 bg-red-600 text-black font-bold shadow-sm rounded-md" RADERA ANVÄNDAREN!
     section class="flex gap-4 my-4"
         div class="w-40 flex flex-col justify-center"
-            img src="https://avatars.dicebear.com/api/pixel-art/#{@user.id}.svg" class="h-40 w-40 rounded-full"
+            img src="https://avatars.dicebear.com/api/pixel-art/#{@user.id}asd.svg" class="h-40 w-40 rounded-full"
             - if @user.admin
                 div class="flex flex-row items-center justify-center gap-2 my-2 group relative"
                     p class="font-bold text-center" = @user.username 
@@ -32,5 +32,7 @@ main class="max-w-screen-md m-auto"
                         == partial "button", locals: { label: "Logga ut", type: "submit" }
         div class="mt-4"
             h1 class="text-2xl font-semibold" = "#{@user.username}s senaste matcher" 
+            - if @user_matches.empty?
+                p Användaren har inte spelat några matcher
             - @user_matches.each do |result|        
                 == partial "result", locals: { result: result }
